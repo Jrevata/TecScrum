@@ -17,13 +17,34 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.ProjectListActivity" />
+        <activity android:name=".activities.ProjectListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".activities.SignUpActivity" />
         <activity android:name=".activities.SprintActivity" />
         <activity android:name=".activities.DailyListActivity" />
-        <activity android:name=".activities.DailyActivity" />
+        <activity android:name=".activities.DailyActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".activities.MoodTodayListActivity" />
-        <activity android:name=".activities.MoodTodayActivity"></activity>
+        <activity android:name=".activities.MoodTodayActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

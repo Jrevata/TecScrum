@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <item
+        android:id="@+id/menu_home"
+        android:title="@string/sprints"
+        android:icon="@android:drawable/ic_menu_agenda" />
+
+    <item
+        android:id="@+id/menu_camera"
+        android:title="@string/team"
+        android:icon="@android:drawable/ic_menu_myplaces" />
+
+
+
+</menu>

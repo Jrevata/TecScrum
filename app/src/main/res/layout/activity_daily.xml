@@ -1,9 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.DailyActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_dailyform"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="Sprint Name - Project Name"
+        android:background="@color/colorPrimary"
+        app:titleTextColor="#fff">
+
+    </android.support.v7.widget.Toolbar>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar_dailyform"
+        >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginEnd="20dp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="20dp"
+        android:background="@drawable/shape_card_project"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintVertical_bias="1.0">
+
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_height="wrap_content"
+            android:descendantFocusability="beforeDescendants"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
+
+
+            <LinearLayout
+                android:id="@+id/linearlayout_daily1"
+                android:layout_width="match_parent"
+                android:gravity="center"
+
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/textview_dailyname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato"
+                    android:text="Daily n"
+                    android:textAllCaps="false"
+                    android:textColor="#000"
+                    android:textSize="20sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato"
+                    android:text=" - "
+                    android:textAllCaps="false"
+                    android:textColor="#000"
+                    android:textSize="20sp" />
+                <TextView
+                    android:id="@+id/textview_dailydate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato"
+                    android:text="Fecha"
+                    android:textAllCaps="false"
+                    android:textColor="#000"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textview_didyesterday"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:textSize="15sp"
+                android:fontFamily="@font/lato"
+                android:layout_height="wrap_content"
+                android:text="@string/did_yesterday"
+                android:layout_below="@+id/linearlayout_daily1"/>
+
+            <EditText
+                android:id="@+id/editText_didyesterday"
+                android:layout_below="@id/textview_didyesterday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:minLines="3"
+                android:maxLines="5"
+                android:theme="@style/Theme.App.Edittext"/>
+
+            <TextView
+                android:id="@+id/textview_dowilltoday"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:textSize="15sp"
+                android:fontFamily="@font/lato"
+                android:layout_height="wrap_content"
+                android:text="@string/do_will_today"
+                android:layout_below="@+id/editText_didyesterday"/>
+
+            <EditText
+                android:id="@+id/editText_dowilltoday"
+                android:layout_below="@id/textview_dowilltoday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:minLines="3"
+                android:maxLines="5"
+                android:theme="@style/Theme.App.Edittext"/>
+
+
+            <Button
+                android:id="@+id/button_senddaily"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/editText_dowilltoday"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape_form_login"
+                android:fontFamily="@font/roboto"
+                android:text="@string/send"
+                android:textStyle="bold"
+                android:textAllCaps="false"
+                android:textColor="#fffe"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+
+        </RelativeLayout>
+
+        </ScrollView>
+
+    </RelativeLayout>
+
+    </RelativeLayout>
+</RelativeLayout>

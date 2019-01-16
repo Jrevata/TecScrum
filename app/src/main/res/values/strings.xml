@@ -3,4 +3,18 @@
     <string name="name_world">Hello World by Jordan!!!</string>
     <string name="log_in">Log In</string>
     <string name="sign_up">Sign Up</string>
+    <string name="projects">Projects</string>
+    <string name="sprints">Sprints</string>
+    <string name="team">Team</string>
+    <string name="send">Enviar</string>
+    <string name="did_yesterday">¿Qué hice ayer?</string>
+    <string name="do_will_today">¿Qué haré hoy?</string>
+    <string name="emotion_question">¿Cómo te sentiste hoy?</string>
+    <string name="difficulties_question">¿Qué dificultades tuviste hoy?</string>
+    <string name="dedicated_question">¿Cuánto es tu avance en la tarea actual?</string>
+    <string name="emotion_angry">Enojado</string>
+    <string name="emotion_bad">Mal</string>
+    <string name="emotion_neutral">Neutral</string>
+    <string name="emotion_happy">Feliz</string>
+    <string name="emotion_excellent">Excelente</string>
 </resources>
