@@ -1,13 +1,19 @@
 package com.jordanrevata.tecscrum.activities;
 
-import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import com.jordanrevata.tecscrum.R;
-public class MoodTodayListActivity extends AppCompatActivity {
+
+public class UserDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mood_today_list);
+        setContentView(R.layout.activity_user_detail);
+
+
     }
+
+
 }

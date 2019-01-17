@@ -5,11 +5,11 @@ import android.os.Bundle;
 
 import com.jordanrevata.tecscrum.R;
 
-public class SignUpActivity extends AppCompatActivity {
+public class ProjectMenuActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up);
+        setContentView(R.layout.activity_project_menu);
     }
 }

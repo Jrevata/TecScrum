@@ -17,4 +17,18 @@
     <string name="emotion_neutral">Neutral</string>
     <string name="emotion_happy">Feliz</string>
     <string name="emotion_excellent">Excelente</string>
+    <string name="daily">Daily</string>
+    <string name="mood_today">Mood Today</string>
+    <string name="forum">Forum</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="comment_hint">Escribe un comentario</string>
+    <string name="mobile">Móvil</string>
+    <string name="mail">Correo</string>
+    <string name="names">Nombres</string>
+    <string name="lastname">Apellidos</string>
+    <string name="about">About</string>
+    <string name="log_out">Log out</string>
+    <string name="profile">Profile</string>
 </resources>

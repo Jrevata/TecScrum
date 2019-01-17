@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <item
+        android:id="@+id/menu_dailies"
+        android:title="@string/daily"
+        android:icon="@android:drawable/ic_menu_day" />
+
+    <item
+        android:id="@+id/menu_moodtoday"
+        android:title="@string/mood_today"
+        android:icon="@android:drawable/ic_menu_recent_history" />
+
+    <item
+        android:id="@+id/menu_forum"
+        android:title="@string/forum"
+        android:icon="@android:drawable/ic_menu_agenda" />
+
+
+
+
+
+</menu>
