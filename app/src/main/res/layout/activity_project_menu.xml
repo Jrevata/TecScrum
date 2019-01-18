@@ -3,10 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".activities.ProjectMenuActivity">
+
+    <RelativeLayout
+        android:id="@+id/content_menu_project"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/bottom_navigation_project_menu"></RelativeLayout>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation_project_menu"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -14,6 +23,6 @@
         app:itemIconTint="@android:color/white"
 
         app:itemTextColor="@android:color/white"
-        app:menu="@menu/bottom_sprint" />
+        app:menu="@menu/bottom_project_menu" />
 
 </RelativeLayout>

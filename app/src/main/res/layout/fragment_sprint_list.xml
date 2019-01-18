@@ -6,6 +6,7 @@
     tools:context=".fragments.SprintListFragment">
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview_sprints"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginVertical="20dp"

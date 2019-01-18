@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name">TecScrum</string>
     <string name="name_world">Hello World by Jordan!!!</string>
-    <string name="log_in">Log In</string>
+    <string name="log_in">Iniciar Sesión</string>
     <string name="sign_up">Sign Up</string>
-    <string name="projects">Projects</string>
+    <string name="projects">Proyectos</string>
     <string name="sprints">Sprints</string>
-    <string name="team">Team</string>
+    <string name="team">Equipo</string>
     <string name="send">Enviar</string>
     <string name="did_yesterday">¿Qué hice ayer?</string>
     <string name="do_will_today">¿Qué haré hoy?</string>
@@ -19,7 +19,9 @@
     <string name="emotion_excellent">Excelente</string>
     <string name="daily">Daily</string>
     <string name="mood_today">Mood Today</string>
-    <string name="forum">Forum</string>
+    <string name="forum">Foro</string>
+    <string name="go_sprints">Ir a la sección Sprints</string>
+    <string name="go_team">Ir a la sección del equipo</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -28,7 +30,7 @@
     <string name="mail">Correo</string>
     <string name="names">Nombres</string>
     <string name="lastname">Apellidos</string>
-    <string name="about">About</string>
-    <string name="log_out">Log out</string>
-    <string name="profile">Profile</string>
+    <string name="about">Acerca de</string>
+    <string name="log_out">Cerrar Sesión</string>
+    <string name="profile">Perfil</string>
 </resources>

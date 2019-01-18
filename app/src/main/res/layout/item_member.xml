@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cardview_member"
     android:layout_width="match_parent"
+    android:layout_marginTop="1dp"
     android:layout_height="wrap_content">
 
     <LinearLayout
@@ -19,12 +21,14 @@
             android:orientation="vertical"
             android:layout_weight="15">
             <TextView
+                android:id="@+id/textview_member_fullname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Jordan Revata Cuela"
                 android:fontFamily="@font/roboto"
                 android:textColor="@color/Black"/>
             <TextView
+                android:id="@+id/textview_member_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
@@ -39,7 +43,8 @@
             <ImageButton
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@drawable/img_message"/>
+                android:backgroundTint="@color/Black"
+                android:background="@android:drawable/ic_menu_view"/>
         </LinearLayout>
     </LinearLayout>
 </android.support.v7.widget.CardView>
