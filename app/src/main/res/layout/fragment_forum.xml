@@ -8,7 +8,7 @@
     <LinearLayout
         android:id="@+id/linearlayout_comments"
         android:layout_width="match_parent"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:layout_height="wrap_content">
 
         <EditText
@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/comment_hint"
             android:inputType="textMultiLine"
-            android:minLines="3"
+            android:minLines="2"
             android:layout_weight="1"
             />
         <Button
@@ -31,7 +31,6 @@
         android:id="@+id/recyclerview_comments"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="20dp"
         android:layout_below="@+id/linearlayout_comments">
 
     </android.support.v7.widget.RecyclerView>

@@ -2,6 +2,7 @@ package com.jordanrevata.tecscrum.adapters;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jordanrevata.tecscrum.R;
+import com.jordanrevata.tecscrum.activities.ProjectMenuActivity;
+import com.jordanrevata.tecscrum.activities.SprintMenuActivity;
 import com.jordanrevata.tecscrum.models.Project;
 
 import java.util.ArrayList;
@@ -77,6 +80,9 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHold
             @Override
             public void onClick(View v) {
                 Toast.makeText(viewHolder.cardview_project.getContext(), project.getProject_name(), Toast.LENGTH_SHORT).show();
+                Intent intentProject = new Intent(activity.getBaseContext(), ProjectMenuActivity.class);
+
+                activity.startActivity(intentProject);
             }
         });
 

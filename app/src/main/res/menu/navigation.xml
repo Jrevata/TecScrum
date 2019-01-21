@@ -5,12 +5,12 @@
         android:checkableBehavior="single">
 
         <item
-            android:id="@+id/nav_home"
+            android:id="@+id/nav_projects"
             android:icon="@android:drawable/ic_menu_myplaces"
             android:title="@string/projects" />
 
         <item
-            android:id="@+id/nav_calendar"
+            android:id="@+id/nav_profile"
             android:icon="@android:drawable/ic_menu_my_calendar"
             android:title="@string/profile" />
 
@@ -23,7 +23,7 @@
         android:checkableBehavior="single">
 
         <item
-            android:id="@+id/nav_settings"
+            android:id="@+id/nav_about"
             android:icon="@android:drawable/ic_menu_manage"
             android:title="@string/about" />
 

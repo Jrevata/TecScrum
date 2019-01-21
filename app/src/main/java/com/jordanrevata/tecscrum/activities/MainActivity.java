@@ -1,5 +1,6 @@
 package com.jordanrevata.tecscrum.activities;
 
+import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -59,15 +60,21 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 // Do action by menu item id
                 switch (menuItem.getItemId()){
-                    case R.id.nav_home:
-                        Toast.makeText(MainActivity.this, "Go home...", Toast.LENGTH_SHORT).show();
+                    case R.id.nav_projects:
+                        Toast.makeText(MainActivity.this, "Go Projects...", Toast.LENGTH_SHORT).show();
                         break;
-                    case R.id.nav_calendar:
-                        Toast.makeText(MainActivity.this, "Go calendar...", Toast.LENGTH_SHORT).show();
+                    case R.id.nav_profile:
+                        Toast.makeText(MainActivity.this, "Go Profile...", Toast.LENGTH_SHORT).show();
+                        Intent intentProfile = new Intent(MainActivity.this, UserDetailActivity.class);
+                        intentProfile.putExtra("fullname" , "Jordan Revata");
+                        intentProfile.putExtra("email", "jordan.revata@tecsup.edu.pe");
+                        intentProfile.putExtra("phone", "998323123");
+                        intentProfile.putExtra("code", "Edit");
+                        startActivity(intentProfile);
                         break;
 
-                    case R.id.nav_settings:
-                        Toast.makeText(MainActivity.this, "Go settings...", Toast.LENGTH_SHORT).show();
+                    case R.id.nav_about:
+                        Toast.makeText(MainActivity.this, "Go About...", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.nav_logout:
                         Toast.makeText(MainActivity.this, "Do logout...", Toast.LENGTH_SHORT).show();

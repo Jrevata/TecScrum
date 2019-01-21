@@ -20,7 +20,7 @@
         android:padding="10dp" >
 
         <ImageView
-            android:id="@+id/img_camion"
+            android:id="@+id/imageview_photo_comment"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginEnd="17dp"
@@ -34,6 +34,7 @@
             android:layout_weight="1">
 
             <TextView
+                android:id="@+id/textview_fullname_comment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Jordan Revata Cuela"
@@ -42,6 +43,7 @@
                 android:textSize="15sp"
                 android:textStyle="bold"/>
             <TextView
+                android:id="@+id/textview_date_comment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#8492A6"
@@ -52,6 +54,7 @@
                 android:textStyle="bold"/>
 
             <TextView
+                android:id="@+id/textview_message_comment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"

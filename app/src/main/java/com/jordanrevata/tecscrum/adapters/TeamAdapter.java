@@ -1,6 +1,7 @@
 package com.jordanrevata.tecscrum.adapters;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jordanrevata.tecscrum.R;
+import com.jordanrevata.tecscrum.activities.UserDetailActivity;
 import com.jordanrevata.tecscrum.models.Sprint;
 import com.jordanrevata.tecscrum.models.User;
 
@@ -71,6 +73,12 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.ViewHolder> {
             @Override
             public void onClick(View v) {
                 Toast.makeText(viewHolder.cardview_member.getContext(), "Hola " + user.getGivenName(), Toast.LENGTH_SHORT).show();
+                Intent intentTeam = new Intent(fragment.getContext(), UserDetailActivity.class);
+                intentTeam.putExtra("fullname", user.getGivenName() + " " + user.getFamilyName());
+                intentTeam.putExtra("email", user.getEmail());
+                intentTeam.putExtra("phone", user.getPhone());
+                intentTeam.putExtra("code" , "noEdit");
+                fragment.startActivity(intentTeam);
             }
         });
 

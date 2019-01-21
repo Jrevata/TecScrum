@@ -15,6 +15,11 @@
         <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
+    <style name="AppTheme.NoActionBar2">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
     <style name="Theme.App.Edittext" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorControlNormal">#c5c5c5</item>
         <item name="colorControlActivated">@color/appreparto4</item>

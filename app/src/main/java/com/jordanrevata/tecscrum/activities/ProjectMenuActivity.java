@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -15,41 +16,35 @@ import com.jordanrevata.tecscrum.fragments.TeamFragment;
 
 public class ProjectMenuActivity extends AppCompatActivity {
 
+    FragmentManager fragmentManager;
+    Fragment fragmentSprint;
+    Fragment fragmentTeam;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project_menu);
 
+        fragmentManager = getSupportFragmentManager();
+        fragmentSprint  = new SprintListFragment();
+        fragmentManager.beginTransaction().replace(R.id.content_menu_project, fragmentSprint).addToBackStack("tag").commit();
         BottomNavigationView bottomNavigationView = (BottomNavigationView)findViewById(R.id.bottom_navigation_project_menu);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
                     case R.id.menu_sprints:
                         Toast.makeText(ProjectMenuActivity.this, R.string.go_sprints, Toast.LENGTH_SHORT).show();
-                        // Get FragmentManager
-                        FragmentManager fragmentManager = getSupportFragmentManager();
 
                         // Create FirstFragment
-                        Fragment fragment = new SprintListFragment();
-
+                        fragmentSprint = new SprintListFragment();
                         // Replace content
-                        fragmentManager.beginTransaction().replace(R.id.content_menu_project, fragment).addToBackStack("tag").commit();
-
-
+                        fragmentManager.beginTransaction().replace(R.id.content_menu_project, fragmentSprint).addToBackStack("tag").commit();
                         break;
                     case R.id.menu_team:
                         Toast.makeText(ProjectMenuActivity.this, R.string.go_team, Toast.LENGTH_SHORT).show();
-
-                        // Get FragmentManager
-                        FragmentManager fragmentManager2 = getSupportFragmentManager();
-
-                        // Create FirstFragment
-                        Fragment fragment2 = new TeamFragment();
-
-                        // Replace content
-                        fragmentManager2.beginTransaction().replace(R.id.content_menu_project, fragment2).addToBackStack("tag").commit();
+                        fragmentTeam = new TeamFragment();
+                        fragmentManager.beginTransaction().replace(R.id.content_menu_project, fragmentTeam).addToBackStack("tag").commit();
 
                         break;
                 }
@@ -59,6 +54,14 @@ public class ProjectMenuActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            finish();
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
 
 }
 
