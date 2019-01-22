@@ -11,8 +11,14 @@ public class DailyRepository {
 
     static {
 
-        for (int i = 1; i < 21; i++)
-            dailies.add(new Daily(1, 1, 1, "Daily " + i, "Nada", "Nada", i+"-01-2019", true));
+        for (int i = 1; i < 21; i++){
+            Daily n = new Daily(i, 1, 1, "Daily " + i, "Nada", "Nada", i+"-01-2019", true);
+
+            if(i % 2 == 0)
+                n.setState(false);
+
+            dailies.add(n);
+        }
     }
 
 

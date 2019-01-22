@@ -38,7 +38,7 @@ public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.ViewHolder>  {
 
         public TextView textview_moodcheckname;
         public TextView textview_moodcheckdate;
-        public CheckBox checkbox_moodtoday;
+
         public CardView cardview_moodtoday;
 
         public ViewHolder(View itemView){
@@ -46,7 +46,7 @@ public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.ViewHolder>  {
 
             textview_moodcheckname = itemView.findViewById(R.id.textview_moodcheckname);
             textview_moodcheckdate = itemView.findViewById(R.id.textview_moodcheckdate);
-            checkbox_moodtoday     = itemView.findViewById(R.id.checkbox_moodtoday);
+
             cardview_moodtoday     = itemView.findViewById(R.id.cardview_moodtoday);
 
         }
@@ -69,7 +69,7 @@ public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.ViewHolder>  {
 
         viewHolder.textview_moodcheckname.setText(moodToday.getMoodname());
         viewHolder.textview_moodcheckdate.setText(moodToday.getDate_mood());
-        viewHolder.checkbox_moodtoday.setChecked(moodToday.getState());
+
         viewHolder.cardview_moodtoday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

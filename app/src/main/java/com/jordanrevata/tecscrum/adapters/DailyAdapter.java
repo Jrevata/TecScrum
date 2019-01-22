@@ -1,6 +1,7 @@
 package com.jordanrevata.tecscrum.adapters;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jordanrevata.tecscrum.R;
@@ -40,7 +42,7 @@ public class DailyAdapter extends RecyclerView.Adapter<DailyAdapter.ViewHolder> 
 
         public TextView textview_dailycheckname;
         public TextView textview_dailycheckdate;
-        public CheckBox checkbox_daily;
+        public ImageView imageview_daily;
         public CardView cardview_daily;
 
         public ViewHolder(View itemView){
@@ -48,7 +50,7 @@ public class DailyAdapter extends RecyclerView.Adapter<DailyAdapter.ViewHolder> 
 
             textview_dailycheckname = itemView.findViewById(R.id.textview_dailycheckname);
             textview_dailycheckdate = itemView.findViewById(R.id.textview_dailycheckdate);
-            checkbox_daily          = itemView.findViewById(R.id.checkbox_daily);
+            imageview_daily         = itemView.findViewById(R.id.imageview_daily);
             cardview_daily          = itemView.findViewById(R.id.cardview_daily);
         }
 
@@ -70,15 +72,30 @@ public class DailyAdapter extends RecyclerView.Adapter<DailyAdapter.ViewHolder> 
 
         viewHolder.textview_dailycheckname.setText(daily.getDailyname());
         viewHolder.textview_dailycheckdate.setText(daily.getDate_daily());
-        viewHolder.setIsRecyclable(daily.getState());
 
-        viewHolder.cardview_daily.setOnClickListener(new View.OnClickListener() {
+
+
+        viewHolder.textview_dailycheckname.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intentDaily = new Intent(fragment.getContext(), DailyActivity.class);
                 fragment.startActivity(intentDaily);
             }
         });
+
+        if(daily.getIddailies() == 1){
+            viewHolder.imageview_daily.setBackgroundResource(R.drawable.img_check_pending);
+            viewHolder.textview_dailycheckname.setTextColor(viewHolder.textview_dailycheckname.getResources().getColor(R.color.colorPrimary));
+            viewHolder.textview_dailycheckname.setTypeface(Typeface.DEFAULT_BOLD);
+        }else{
+            viewHolder.textview_dailycheckname.setTextColor(viewHolder.textview_dailycheckname.getResources().getColor(R.color.Black_Eel));
+            viewHolder.textview_dailycheckname.setTypeface(Typeface.DEFAULT);
+
+            if (daily.getState())
+                viewHolder.imageview_daily.setBackgroundResource(R.drawable.img_check_finish);
+            else
+                viewHolder.imageview_daily.setBackgroundResource(R.drawable.img_check_bad);
+        }
 
     }
 

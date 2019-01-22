@@ -18,11 +18,12 @@
             android:layout_width="wrap_content"
             android:layout_weight="1"
             android:layout_height="wrap_content">
-            <CheckBox
-                android:id="@+id/checkbox_moodtoday"
+            <ImageView
+                android:id="@+id/imageview_moodtoday"
                 android:layout_gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:src="@drawable/img_check_finish"
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
         </FrameLayout>
         <TextView
             android:id="@+id/textview_moodcheckname"

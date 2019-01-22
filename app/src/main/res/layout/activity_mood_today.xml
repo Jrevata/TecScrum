@@ -221,6 +221,7 @@
                             android:id="@+id/radio_angry"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:theme="@style/MyRadioButton"
                             android:layout_weight="1"
                             android:layout_gravity="center"
 
@@ -236,6 +237,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:theme="@style/MyRadioButton"
                             android:layout_gravity="center"
 
                             />
@@ -251,7 +253,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_gravity="center"
-
+                            android:theme="@style/MyRadioButton"
                             />
                     </FrameLayout>
 
@@ -264,8 +266,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:theme="@style/MyRadioButton"
                             android:layout_gravity="center"
-
                             />
                     </FrameLayout>
 
@@ -278,6 +280,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:theme="@style/MyRadioButton"
                             android:layout_gravity="center"
 
                             />
@@ -374,6 +377,7 @@
                             android:id="@+id/radio_dedicated_0"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:theme="@style/MyRadioButton"
                             android:layout_weight="1"
                             android:layout_gravity="center"
 
@@ -387,6 +391,7 @@
                         <RadioButton
                             android:id="@+id/radio_dedicated_40"
                             android:layout_width="wrap_content"
+                            android:theme="@style/MyRadioButton"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_gravity="center"
@@ -401,6 +406,7 @@
                         <RadioButton
                             android:id="@+id/radio_dedicated_40_70"
                             android:layout_width="wrap_content"
+                            android:theme="@style/MyRadioButton"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_gravity="center"
@@ -414,6 +420,7 @@
                         android:layout_weight="1">
                         <RadioButton
                             android:id="@+id/radio_dedicated_70"
+                            android:theme="@style/MyRadioButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -428,6 +435,7 @@
                         android:layout_weight="1">
                         <RadioButton
                             android:id="@+id/radio_dedicated_100"
+                            android:theme="@style/MyRadioButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
