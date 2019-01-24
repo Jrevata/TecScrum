@@ -10,6 +10,11 @@ import android.widget.TextView;
 
 import com.jordanrevata.tecscrum.R;
 import com.jordanrevata.tecscrum.models.User;
+import com.jordanrevata.tecscrum.repositories.UserRepository;
+import com.jordanrevata.tecscrum.services.ApiService;
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserDetailActivity extends AppCompatActivity {
 
@@ -17,7 +22,7 @@ public class UserDetailActivity extends AppCompatActivity {
     private TextView textview_profile_fullname;
     private TextView textview_profile_email;
     private TextView textview_profile_phone;
-
+    private CircleImageView imageview_photo_profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,13 +30,7 @@ public class UserDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_detail);
 
 
-        User user = new User();
 
-        user.setPhone(getIntent().getStringExtra("phone"));
-        user.setEmail(getIntent().getStringExtra("email"));
-        user.setFullname(getIntent().getStringExtra("fullname"));
-
-        setProfile(user);
 
         String code = getIntent().getStringExtra("code");
 
@@ -39,6 +38,8 @@ public class UserDetailActivity extends AppCompatActivity {
         floatingActionButtonEdit = findViewById(R.id.floating_button_edit);
 
         if(code.equals("Edit")){
+            User user = UserRepository.getUser();
+            setProfile(user);
             floatingActionButtonEdit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -47,6 +48,7 @@ public class UserDetailActivity extends AppCompatActivity {
                 }
             });
         }else{
+
             floatingActionButtonEdit.hide();
         }
 
@@ -57,10 +59,15 @@ public class UserDetailActivity extends AppCompatActivity {
         textview_profile_email = findViewById(R.id.textview_profile_email);
         textview_profile_phone = findViewById(R.id.textview_profile_phone);
         textview_profile_fullname = findViewById(R.id.textview_profile_fullname);
+        imageview_photo_profile = findViewById(R.id.imageview_photo_profile);
+
+        String url = ApiService.API_BASE_URL + "/images/" + user.getImage();
 
         textview_profile_fullname.setText(user.getFullname());
         textview_profile_email.setText(user.getEmail());
         textview_profile_phone.setText(user.getPhone());
+        Picasso.with(this).load(url).into(imageview_photo_profile);
+
 
     }
 

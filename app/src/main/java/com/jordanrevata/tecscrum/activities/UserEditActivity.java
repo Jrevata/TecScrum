@@ -1,5 +1,7 @@
 package com.jordanrevata.tecscrum.activities;
 
+import android.graphics.Bitmap;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import com.jordanrevata.tecscrum.R;
@@ -21,10 +23,14 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 
 import com.jordanrevata.tecscrum.R;
+import com.jordanrevata.tecscrum.models.User;
+import com.jordanrevata.tecscrum.repositories.UserRepository;
+import com.jordanrevata.tecscrum.services.ApiService;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -40,6 +46,11 @@ public class UserEditActivity extends AppCompatActivity {
     public static final int REQUEST_CODE_GALLERY    = 0013;
 
     private CircleImageView profile_image;
+    private EditText editText_name_edit;
+    private  EditText editText_lastname_edit;
+    private EditText editText_phone_edit;
+    private FloatingActionButton floating_button_save;
+
     private Button button_openimage;
 
     private String[] items = {"Camera" , "Gallery"};
@@ -56,13 +67,39 @@ public class UserEditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_edit);
 
+        User user = UserRepository.getUser();
+
         profile_image = findViewById(R.id.profile_image_edit);
         button_openimage = findViewById(R.id.button_openimage);
+        editText_name_edit = findViewById(R.id.editText_name_edit);
+        editText_lastname_edit = findViewById(R.id.editText_lastname_edit);
+        editText_phone_edit = findViewById(R.id.editText_phone_edit);
+        floating_button_save = findViewById(R.id.floating_button_save);
+
+        String url = ApiService.API_BASE_URL + "/images/" + user.getImage();
+
+
+        editText_name_edit.setText(user.getGivenName());
+        editText_lastname_edit.setText(user.getFamilyName());
+        editText_phone_edit.setText(user.getPhone());
+        if(user.getImage() != null){
+
+            Picasso.with(this).load(url).into(profile_image);
+
+        }
+
 
         button_openimage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openImage();
+            }
+        });
+
+        floating_button_save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
 
@@ -144,10 +181,10 @@ public class UserEditActivity extends AppCompatActivity {
             private void onPhotosReturned(List<File> imageFile,int type) {
                 switch (type){
                     case REQUEST_CODE_CAMERA:
-                        Picasso.get().load(imageFile.get(0)).into(profile_image);
+                        Picasso.with(UserEditActivity.this).load(imageFile.get(0)).into(profile_image);
                         break;
                     case REQUEST_CODE_GALLERY:
-                        Picasso.get().load(imageFile.get(0)).into(profile_image);
+                        Picasso.with(UserEditActivity.this).load(imageFile.get(0)).into(profile_image);
                         break;
                 }
 
@@ -166,4 +203,27 @@ public class UserEditActivity extends AppCompatActivity {
 
 
     }
+
+
+    // Redimensionar una imagen bitmap
+    private Bitmap scaleBitmapDown(Bitmap bitmap, int maxDimension) {
+
+        int originalWidth = bitmap.getWidth();
+        int originalHeight = bitmap.getHeight();
+        int resizedWidth = maxDimension;
+        int resizedHeight = maxDimension;
+
+        if (originalHeight > originalWidth) {
+            resizedHeight = maxDimension;
+            resizedWidth = (int) (resizedHeight * (float) originalWidth / (float) originalHeight);
+        } else if (originalWidth > originalHeight) {
+            resizedWidth = maxDimension;
+            resizedHeight = (int) (resizedWidth * (float) originalHeight / (float) originalWidth);
+        } else if (originalHeight == originalWidth) {
+            resizedHeight = maxDimension;
+            resizedWidth = maxDimension;
+        }
+        return Bitmap.createScaledBitmap(bitmap, resizedWidth, resizedHeight, false);
+    }
+
 }
