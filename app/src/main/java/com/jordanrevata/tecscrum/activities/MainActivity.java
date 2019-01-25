@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }else {
 
+            Toast.makeText(MainActivity.this,"Bienvenido(a) " + UserRepository.getUser().getGivenName(), Toast.LENGTH_LONG).show();
 
             Toolbar toolbar = findViewById(R.id.toolbar_projects);
             setSupportActionBar(toolbar);
@@ -145,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerview_projects.setLayoutManager(new LinearLayoutManager(this));
         recyclerview_projects.setAdapter(new ProjectAdapter(this));
 
-        Toast.makeText(MainActivity.this, UserRepository.getUser().getToken(), Toast.LENGTH_LONG).show();
+
 
 
         ApiService api = ApiServiceGenerator.createService(ApiService.class);

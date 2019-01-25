@@ -81,7 +81,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHold
             public void onClick(View v) {
                 Toast.makeText(viewHolder.cardview_project.getContext(), project.getProject_name(), Toast.LENGTH_SHORT).show();
                 Intent intentProject = new Intent(activity.getBaseContext(), ProjectMenuActivity.class);
-
+                intentProject.putExtra("idprojects", project.getIdprojects());
                 activity.startActivity(intentProject);
             }
         });

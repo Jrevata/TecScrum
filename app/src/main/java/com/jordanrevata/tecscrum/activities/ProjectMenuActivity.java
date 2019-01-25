@@ -1,5 +1,6 @@
 package com.jordanrevata.tecscrum.activities;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -19,14 +20,25 @@ public class ProjectMenuActivity extends AppCompatActivity {
     FragmentManager fragmentManager;
     Fragment fragmentSprint;
     Fragment fragmentTeam;
+    Integer idprojects;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project_menu);
 
+        idprojects = getIntent().getExtras().getInt("idprojects");
+
+        final Bundle bundleGeneral = new Bundle();
+        bundleGeneral.putInt("idprojects", idprojects);
+
+
+        Toast.makeText(this, String.valueOf(idprojects), Toast.LENGTH_LONG).show();
+
         fragmentManager = getSupportFragmentManager();
         fragmentSprint  = new SprintListFragment();
+        fragmentSprint.setArguments(bundleGeneral);
         fragmentManager.beginTransaction().replace(R.id.content_menu_project, fragmentSprint).addToBackStack("tag").commit();
         BottomNavigationView bottomNavigationView = (BottomNavigationView)findViewById(R.id.bottom_navigation_project_menu);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -34,16 +46,19 @@ public class ProjectMenuActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.menu_sprints:
+
                         Toast.makeText(ProjectMenuActivity.this, R.string.go_sprints, Toast.LENGTH_SHORT).show();
 
                         // Create FirstFragment
                         fragmentSprint = new SprintListFragment();
+                        fragmentSprint.setArguments(bundleGeneral);
                         // Replace content
                         fragmentManager.beginTransaction().replace(R.id.content_menu_project, fragmentSprint).addToBackStack("tag").commit();
                         break;
                     case R.id.menu_team:
                         Toast.makeText(ProjectMenuActivity.this, R.string.go_team, Toast.LENGTH_SHORT).show();
                         fragmentTeam = new TeamFragment();
+                        fragmentTeam.setArguments(bundleGeneral);
                         fragmentManager.beginTransaction().replace(R.id.content_menu_project, fragmentTeam).addToBackStack("tag").commit();
 
                         break;

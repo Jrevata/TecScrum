@@ -32,6 +32,8 @@ public class SprintMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sprint_menu);
 
+
+
         relativeLayoutSprintMenu = findViewById(R.id.content_menu_sprint);
         bottomNavigationView =  findViewById(R.id.bottom_navigation_sprint_menu);
 

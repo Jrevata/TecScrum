@@ -3,6 +3,8 @@ package com.jordanrevata.tecscrum.services;
 import com.jordanrevata.tecscrum.models.Credential;
 import com.jordanrevata.tecscrum.models.Login;
 import com.jordanrevata.tecscrum.models.Project;
+import com.jordanrevata.tecscrum.models.Sprint;
+import com.jordanrevata.tecscrum.models.User;
 
 import java.util.List;
 
@@ -27,5 +29,11 @@ public interface ApiService {
     @POST("/api/logout")
     Call<Void> logout();
 
+    @GET("/api/sprints/getAllbyProject/{id}")
+    Call<List<Sprint>> getSprintsByProject(@Path("id") int id);
+
+
+    @GET("/api/projects/getUsersByProject/{id}")
+    Call<List<User>> getUsersByProject(@Path("id") int id);
 
 }

@@ -30,8 +30,6 @@ public class UserDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_detail);
 
 
-
-
         String code = getIntent().getStringExtra("code");
 
 
@@ -48,6 +46,14 @@ public class UserDetailActivity extends AppCompatActivity {
                 }
             });
         }else{
+
+            User userMember = new User();
+            userMember.setFullname(getIntent().getExtras().getString("fullname"));
+            userMember.setEmail(getIntent().getExtras().getString("email"));
+            userMember.setPhone(getIntent().getExtras().getString("phone"));
+            userMember.setImage(getIntent().getExtras().getString("image"));
+
+            setProfile(userMember);
 
             floatingActionButtonEdit.hide();
         }

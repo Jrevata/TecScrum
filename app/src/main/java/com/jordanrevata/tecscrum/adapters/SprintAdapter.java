@@ -68,7 +68,7 @@ public class SprintAdapter extends RecyclerView.Adapter<SprintAdapter.ViewHolder
         final Sprint sprint = this.sprints.get(position);
 
         viewHolder.textview_sprintname.setText(sprint.getSprint_name());
-        viewHolder.textview_sprintgoal.setText(sprint.getSprint_goal());
+        viewHolder.textview_sprintgoal.setText("Spring Goal: " + sprint.getSprint_goal());
         viewHolder.textview_sprintstart.setText(sprint.getStart_date());
         viewHolder.textview_sprintend.setText(sprint.getEnd_date());
 

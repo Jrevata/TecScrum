@@ -72,11 +72,11 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.ViewHolder> {
         viewHolder.cardview_member.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(viewHolder.cardview_member.getContext(), "Hola " + user.getGivenName(), Toast.LENGTH_SHORT).show();
                 Intent intentTeam = new Intent(fragment.getContext(), UserDetailActivity.class);
                 intentTeam.putExtra("fullname", user.getGivenName() + " " + user.getFamilyName());
                 intentTeam.putExtra("email", user.getEmail());
                 intentTeam.putExtra("phone", user.getPhone());
+                intentTeam.putExtra("image", user.getImage());
                 intentTeam.putExtra("code" , "noEdit");
                 fragment.startActivity(intentTeam);
             }
