@@ -18,14 +18,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.jobdispatcher.FirebaseJobDispatcher;
+import com.firebase.jobdispatcher.GooglePlayDriver;
+import com.firebase.jobdispatcher.Job;
+import com.firebase.jobdispatcher.Lifetime;
+import com.firebase.jobdispatcher.Trigger;
 import com.jordanrevata.tecscrum.R;
 import com.jordanrevata.tecscrum.adapters.ProjectAdapter;
+import com.jordanrevata.tecscrum.models.Daily;
 import com.jordanrevata.tecscrum.models.Project;
 import com.jordanrevata.tecscrum.models.User;
 import com.jordanrevata.tecscrum.repositories.ProjectRepository;
 import com.jordanrevata.tecscrum.repositories.UserRepository;
 import com.jordanrevata.tecscrum.services.ApiService;
 import com.jordanrevata.tecscrum.services.ApiServiceGenerator;
+import com.jordanrevata.tecscrum.services.DailyJobService;
+import com.jordanrevata.tecscrum.services.NotificationHelper;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -100,6 +108,8 @@ public class MainActivity extends AppCompatActivity {
                             break;
 
                         case R.id.nav_about:
+                            NotificationHelper notificationHelper = new NotificationHelper(getApplicationContext());
+                            notificationHelper.createNotification("Titulo", "Unos mensajes");
                             Toast.makeText(MainActivity.this, "Go About...", Toast.LENGTH_SHORT).show();
                             break;
                         case R.id.nav_logout:
@@ -116,6 +126,22 @@ public class MainActivity extends AppCompatActivity {
 
 
             initialize();
+
+
+            FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(MainActivity.this));
+
+            Job myJob = dispatcher.newJobBuilder()
+                    .setService(DailyJobService.class)
+                    .setTag(DailyJobService.class.getName())
+                    .setRecurring(false)
+                    .setLifetime(Lifetime.FOREVER)
+                    .setTrigger(Trigger.executionWindow(0, 60))
+                    .setReplaceCurrent(true)
+                    .build();
+
+            dispatcher.mustSchedule(myJob);
+
+            onNewIntent(this.getIntent());
 
         }
 

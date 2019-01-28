@@ -18,13 +18,8 @@
         <meta-data android:name="DATABASE" android:value="tecscrum.db" />
         <meta-data android:name="VERSION" android:value="4" />
         <meta-data android:name="QUERY_LOG" android:value="true" />
-        <meta-data  android:name="DOMAIN_PACKAGE_NAME" android:value="com.jordanrevata.tecscrum.models" />
+        <meta-data  android:name="DOMAIN_PACKAGE_NAME" android:value="com.jordanrevata.tecscrum.models"/>
 
-        <activity
-            android:name=".activities.LoginActivity"
-            android:theme="@style/AppTheme.NoActionBar2">
-
-        </activity>
         <activity
             android:name=".activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -34,24 +29,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.ProjectMenuActivity">
-        </activity>
-        <activity
-            android:name=".activities.DailyActivity"
-            android:theme="@style/AppTheme.NoActionBar2"
-            >
-        </activity>
-        <activity
-            android:name=".activities.MoodTodayActivity"
-            android:theme="@style/AppTheme.NoActionBar2"
-            >
-        </activity>
-        <activity android:name=".activities.SprintMenuActivity">
-        </activity>
-        <activity android:name=".activities.UserDetailActivity">
-        </activity>
-        <activity android:name=".activities.UserEditActivity">
-        </activity>
+
+        <activity android:name=".activities.LoginActivity" android:theme="@style/AppTheme.NoActionBar2"/>
+        <activity android:name=".activities.ProjectMenuActivity"/>
+        <activity android:name=".activities.DailyActivity" android:theme="@style/AppTheme.NoActionBar2" />
+        <activity android:name=".activities.MoodTodayActivity" android:theme="@style/AppTheme.NoActionBar2" />
+        <activity android:name=".activities.SprintMenuActivity"/>
+        <activity android:name=".activities.UserDetailActivity"/>
+        <activity android:name=".activities.UserEditActivity"/>
+
+        <service
+            android:name=".services.DailyJobService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>

@@ -48,4 +48,8 @@ dependencies {
 
     implementation 'com.github.satyan:sugar:1.5'
 
+    //Execution background (Notification)
+    implementation 'com.firebase:firebase-jobdispatcher:0.6.0'
+
+
 }

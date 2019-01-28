@@ -33,4 +33,9 @@
     <string name="about">Acerca de</string>
     <string name="log_out">Cerrar Sesión</string>
     <string name="profile">Perfil</string>
+
+
+    <!-- Notifications -->
+    <string name="daily_text">Toque para completar el formulario diario</string>
+
 </resources>
