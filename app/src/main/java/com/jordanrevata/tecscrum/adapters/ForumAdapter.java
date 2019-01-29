@@ -12,6 +12,8 @@ import android.widget.Toast;
 import com.jordanrevata.tecscrum.R;
 
 import com.jordanrevata.tecscrum.models.Forum;
+import com.jordanrevata.tecscrum.services.ApiService;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,11 +63,16 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ViewHolder>{
 
         final Forum comment = this.comments.get(position);
 
-        viewHolder.textview_fullname_comment.setText(comment.getFullname());
-        viewHolder.textview_date_comment.setText(comment.getDatetime_comment());
+
+
+        viewHolder.textview_fullname_comment.setText(comment.getGivenName() + " " + comment.getFamilyName());
+        viewHolder.textview_date_comment.setText(comment.getCreated_at());
         viewHolder.textview_message_comment.setText(comment.getMessage());
 
-
+        if(comment.getImage()!= null) {
+            String urlimage = ApiService.API_BASE_URL+"/images/"+comment.getImage();
+            Picasso.with(fragment.getContext()).load(urlimage).into(viewHolder.imageview_photo_comment);
+        }
 
 
     }

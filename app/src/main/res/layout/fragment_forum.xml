@@ -18,10 +18,12 @@
             android:hint="@string/comment_hint"
             android:inputType="textMultiLine"
             android:theme="@style/Theme.App.Edittext"
+            android:maxLength="300"
             android:minLines="2"
             android:layout_weight="1"
             />
         <Button
+            android:id="@+id/button_sendcomment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/colorPrimary"

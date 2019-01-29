@@ -24,6 +24,7 @@ public class SprintMenuActivity extends AppCompatActivity {
     Fragment moodFragment;
     Fragment forumFragment;
 
+    Integer idsprint;
 
     BottomNavigationView bottomNavigationView;
     RelativeLayout relativeLayoutSprintMenu;
@@ -32,6 +33,10 @@ public class SprintMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sprint_menu);
 
+        idsprint = getIntent().getExtras().getInt("idsprint");
+
+        final Bundle bundleSprint = new Bundle();
+        bundleSprint.putInt("idsprint", idsprint);
 
 
         relativeLayoutSprintMenu = findViewById(R.id.content_menu_sprint);
@@ -39,6 +44,7 @@ public class SprintMenuActivity extends AppCompatActivity {
 
         fragmentManager = getSupportFragmentManager();
         dailyFragment = new DailyListFragment();
+        dailyFragment.setArguments(bundleSprint);
         fragmentManager.beginTransaction().replace(R.id.content_menu_sprint, dailyFragment).addToBackStack("tag").commit();
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -47,20 +53,23 @@ public class SprintMenuActivity extends AppCompatActivity {
 
                 switch (menuItem.getItemId()){
                     case R.id.menu_dailies:
-                        Toast.makeText(SprintMenuActivity.this,"Daily", Toast.LENGTH_SHORT).show();
+
                         dailyFragment = new DailyListFragment();
+                        dailyFragment.setArguments(bundleSprint);
                         fragmentManager.beginTransaction().replace(R.id.content_menu_sprint, dailyFragment).addToBackStack("tag").commit();
                         break;
 
                     case R.id.menu_moodtoday:
-                        Toast.makeText(SprintMenuActivity.this,"Mood Today", Toast.LENGTH_SHORT).show();
+
                         moodFragment = new MoodTodayListFragment();
+                        moodFragment.setArguments(bundleSprint);
                         fragmentManager.beginTransaction().replace(R.id.content_menu_sprint, moodFragment).addToBackStack("tag").commit();
                         break;
 
                     case R.id.menu_forum:
-                        Toast.makeText(SprintMenuActivity.this,"Fórum", Toast.LENGTH_SHORT).show();
+
                         forumFragment = new ForumFragment();
+                        forumFragment.setArguments(bundleSprint);
                         fragmentManager.beginTransaction().replace(R.id.content_menu_sprint, forumFragment).addToBackStack("tag").commit();
                         break;
                 }

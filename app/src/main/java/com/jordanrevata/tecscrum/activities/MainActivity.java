@@ -81,8 +81,10 @@ public class MainActivity extends AppCompatActivity {
             // Change navigation header information
             CircleImageView photoImage = navigationView.getHeaderView(0).findViewById(R.id.menu_photo);
             User user = UserRepository.getUser();
-            String url = ApiService.API_BASE_URL + "/images/" + user.getImage();
-            Picasso.with(this).load(url).into(photoImage);
+            if(user.getImage()!=null) {
+                String url = ApiService.API_BASE_URL + "/images/" + user.getImage();
+                Picasso.with(this).load(url).into(photoImage);
+            }
 
             TextView fullnameText = (TextView) navigationView.getHeaderView(0).findViewById(R.id.menu_fullname);
             fullnameText.setText(user.getFullname());

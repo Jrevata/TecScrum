@@ -1,6 +1,7 @@
 package com.jordanrevata.tecscrum.activities;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,7 +21,7 @@ import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,19 +29,30 @@ import android.widget.Toast;
 
 
 import com.jordanrevata.tecscrum.R;
+import com.jordanrevata.tecscrum.models.ResponseMessage;
 import com.jordanrevata.tecscrum.models.User;
 import com.jordanrevata.tecscrum.repositories.UserRepository;
 import com.jordanrevata.tecscrum.services.ApiService;
+import com.jordanrevata.tecscrum.services.ApiServiceGenerator;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class UserEditActivity extends AppCompatActivity {
 
+    private static final  String TAG = UserEditActivity.class.getSimpleName();
 
     public static final int REQUEST_CODE_CAMERA     = 0012;
     public static final int REQUEST_CODE_GALLERY    = 0013;
@@ -55,6 +67,8 @@ public class UserEditActivity extends AppCompatActivity {
 
     private String[] items = {"Camera" , "Gallery"};
 
+    File mediaFile;
+
     private static final int PERMISSIONS_REQUEST = 100;
 
     private static String[] PERMISSIONS_LIST = new String[]{
@@ -67,6 +81,7 @@ public class UserEditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_edit);
 
+        mediaFile = null;
         User user = UserRepository.getUser();
 
         profile_image = findViewById(R.id.profile_image_edit);
@@ -99,13 +114,98 @@ public class UserEditActivity extends AppCompatActivity {
         floating_button_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                save();
             }
         });
 
         checkAllPermissions();
     }
 
+    private void save() {
+
+        String givenName = editText_name_edit.getText().toString();
+        String familyName = editText_lastname_edit.getText().toString();
+        String phone = editText_phone_edit.getText().toString();
+
+        if(givenName.isEmpty() || familyName.isEmpty() || phone.isEmpty()){
+
+            Toast.makeText(this, "Por favor complete todos los campos", Toast.LENGTH_SHORT).show();
+            return;
+
+        }
+
+        ApiService api = ApiServiceGenerator.createService(ApiService.class);
+
+        Call<ResponseMessage> call = null;
+
+        if(mediaFile == null){
+
+            call = api.updateUserWithoutImage(UserRepository.getUser().getIdusers(),givenName,familyName,phone);
+
+        }else{
+
+            File file = mediaFile;
+
+            Bitmap bitmap = BitmapFactory.decodeFile(file.getPath());
+
+            bitmap = scaleBitmapDown(bitmap, 200);
+
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            byte[] byteArray = stream.toByteArray();
+
+            RequestBody requestFile = RequestBody.create(MediaType.parse("image/jpeg"), byteArray);
+            MultipartBody.Part imagePart = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
+
+            RequestBody givenNamePart = RequestBody.create(MultipartBody.FORM, givenName);
+            RequestBody familyNamePart = RequestBody.create(MultipartBody.FORM, familyName);
+            RequestBody phonePart = RequestBody.create(MultipartBody.FORM, phone);
+
+            call = api.updateUserWithImage(UserRepository.getUser().getIdusers(), givenNamePart, familyNamePart, phonePart, imagePart);
+
+
+        }
+
+        call.enqueue(new Callback<ResponseMessage>() {
+            @Override
+            public void onResponse(Call<ResponseMessage> call, Response<ResponseMessage> response) {
+
+                try{
+                    int statusCode = response.code();
+                    Log.d(TAG, "HTTP status code: " + statusCode);
+
+                    if (response.isSuccessful()) {
+
+                        ResponseMessage responseMessage = response.body();
+                        Log.d(TAG, "responseMessage: " + responseMessage);
+
+                        Toast.makeText(UserEditActivity.this, responseMessage.getMessage(), Toast.LENGTH_LONG).show();
+                        finish();
+
+                    } else {
+                        Log.e(TAG, "onError: " + response.errorBody().string());
+                        throw new Exception("Error en el servicio");
+                    }
+
+                } catch (Throwable t) {
+                    try {
+                        Log.e(TAG, "onThrowable: " + t.toString(), t);
+                        Toast.makeText(UserEditActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+                    } catch (Throwable x) { }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseMessage> call, Throwable t) {
+
+                Log.e(TAG, "onFailure: " + t.toString());
+                Toast.makeText(UserEditActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+
+            }
+        });
+
+    }
 
 
     private void checkAllPermissions() {
@@ -182,9 +282,13 @@ public class UserEditActivity extends AppCompatActivity {
                 switch (type){
                     case REQUEST_CODE_CAMERA:
                         Picasso.with(UserEditActivity.this).load(imageFile.get(0)).into(profile_image);
+                        mediaFile = imageFile.get(0);
+                        Toast.makeText(UserEditActivity.this,mediaFile.getPath(),Toast.LENGTH_LONG).show();
                         break;
                     case REQUEST_CODE_GALLERY:
                         Picasso.with(UserEditActivity.this).load(imageFile.get(0)).into(profile_image);
+                        mediaFile = imageFile.get(0);
+                        Toast.makeText(UserEditActivity.this,mediaFile.getPath(),Toast.LENGTH_LONG).show();
                         break;
                 }
 

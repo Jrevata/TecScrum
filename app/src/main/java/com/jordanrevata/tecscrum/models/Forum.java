@@ -4,43 +4,54 @@ package com.jordanrevata.tecscrum.models;
 //Por discutir en el modelo de la base de datos
 public class Forum {
 
-    private Integer idcomment;
-    private Integer sprints_idsprints;
+    private Integer idcomments;
     private Integer users_idusers;
-    private String fullname;
+    private Integer sprints_idsprints;
     private String message;
-    private String datetime_comment;
-    private String photoURL;
+    private String created_at;
+    private String givenName;
+    private String familyName;
+    private String image;
 
 
     public Forum(){
 
     }
 
-    public Forum(Integer idcomment, Integer sprints_idsprints, Integer users_idusers,String fullname, String message, String datetime_comment, String photoURL) {
-        this.idcomment = idcomment;
+
+    public Forum(Integer idcomment, Integer sprints_idsprints, Integer users_idusers, String familyName, String givenName, String message, String created_at, String image) {
+        this.idcomments = idcomment;
         this.sprints_idsprints = sprints_idsprints;
         this.users_idusers = users_idusers;
-        this.fullname = fullname;
+        this.familyName = familyName;
+        this.givenName = givenName;
         this.message = message;
-        this.datetime_comment = datetime_comment;
-        this.photoURL = photoURL;
+        this.created_at = created_at;
+        this.image = image;
     }
 
-    public String getFullname() {
-        return fullname;
+    public String getFamilyName() {
+        return familyName;
     }
 
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
+    public void setFamilyName(String familyName) {
+        this.familyName = familyName;
     }
 
-    public Integer getIdcomment() {
-        return idcomment;
+    public String getGivenName() {
+        return givenName;
     }
 
-    public void setIdcomment(Integer idcomment) {
-        this.idcomment = idcomment;
+    public void setGivenName(String givenName) {
+        this.givenName = givenName;
+    }
+
+    public Integer getIdcomments() {
+        return idcomments;
+    }
+
+    public void setIdcomments(Integer idcomment) {
+        this.idcomments = idcomment;
     }
 
     public Integer getSprints_idsprints() {
@@ -67,19 +78,19 @@ public class Forum {
         this.message = message;
     }
 
-    public String getDatetime_comment() {
-        return datetime_comment;
+    public String getCreated_at() {
+        return created_at;
     }
 
-    public void setDatetime_comment(String datetime_comment) {
-        this.datetime_comment = datetime_comment;
+    public void setCreated_at(String created_at) {
+        this.created_at = created_at;
     }
 
-    public String getPhotoURL() {
-        return photoURL;
+    public String getImage() {
+        return image;
     }
 
-    public void setPhotoURL(String photoURL) {
-        this.photoURL = photoURL;
+    public void setImage(String image) {
+        this.image = image;
     }
 }

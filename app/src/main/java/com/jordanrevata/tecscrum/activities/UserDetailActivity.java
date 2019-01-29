@@ -12,6 +12,8 @@ import com.jordanrevata.tecscrum.R;
 import com.jordanrevata.tecscrum.models.User;
 import com.jordanrevata.tecscrum.repositories.UserRepository;
 import com.jordanrevata.tecscrum.services.ApiService;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -67,13 +69,16 @@ public class UserDetailActivity extends AppCompatActivity {
         textview_profile_fullname = findViewById(R.id.textview_profile_fullname);
         imageview_photo_profile = findViewById(R.id.imageview_photo_profile);
 
-        String url = ApiService.API_BASE_URL + "/images/" + user.getImage();
+
 
         textview_profile_fullname.setText(user.getFullname());
         textview_profile_email.setText(user.getEmail());
         textview_profile_phone.setText(user.getPhone());
-        Picasso.with(this).load(url).into(imageview_photo_profile);
 
+        if(user.getImage()!=null) {
+            String url = ApiService.API_BASE_URL + "/images/" + user.getImage();
+            Picasso.with(this).load(url).memoryPolicy(MemoryPolicy.NO_CACHE).networkPolicy(NetworkPolicy.NO_CACHE).into(imageview_photo_profile);
+        }
 
     }
 
