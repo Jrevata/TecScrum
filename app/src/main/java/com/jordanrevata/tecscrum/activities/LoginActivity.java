@@ -70,16 +70,14 @@ public class LoginActivity extends AppCompatActivity {
                                 usuario.getUser().setFullname(usuario.getUser().getGivenName() + " " + usuario.getUser().getFamilyName());
                                 usuario.getUser().setToken("Bearer "+usuario.getToken());
 
-                                User user =usuario.getUser();
+                                User user = usuario.getUser();
 
-                                Saved saved = new Saved(usuario.getUser().getIdusers(), usuario.getToken());
 
-                                //Toast.makeText(LoginActivity.this, user.getToken(), Toast.LENGTH_LONG).show();
+
 
                                 Log.e(TAG, user.toString());
 
 
-                                //SavedRepository.create(saved.getIdusers(), saved.getToken());
                                 UserRepository.create(user);
 
                                 Intent intentMain = new Intent(LoginActivity.this, MainActivity.class);

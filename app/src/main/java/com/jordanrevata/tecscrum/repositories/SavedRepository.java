@@ -7,20 +7,14 @@ public class SavedRepository {
 
     public static void create(Integer idusers, String token){
 
-        Saved user = new Saved(idusers, token);
-        SugarRecord.save(user);
+        Saved saved = new Saved(idusers, token);
+        SugarRecord.save(saved);
 
     }
 
 
-    public static Saved getUser(){
 
-        Saved user = SugarRecord.listAll(Saved.class).get(0);
-        return user;
-
-    }
-
-    public static boolean verifyLogeo(){
+    public static boolean verifySave(){
 
         boolean verify = SugarRecord.listAll(Saved.class).isEmpty();
 
@@ -28,7 +22,7 @@ public class SavedRepository {
 
     }
 
-    public static void logout(){
+    public static void deleteSave(){
 
         SugarRecord.deleteAll(Saved.class);
 

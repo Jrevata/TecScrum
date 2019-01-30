@@ -29,6 +29,7 @@ import com.jordanrevata.tecscrum.models.Daily;
 import com.jordanrevata.tecscrum.models.Project;
 import com.jordanrevata.tecscrum.models.User;
 import com.jordanrevata.tecscrum.repositories.ProjectRepository;
+import com.jordanrevata.tecscrum.repositories.SavedRepository;
 import com.jordanrevata.tecscrum.repositories.UserRepository;
 import com.jordanrevata.tecscrum.services.ApiService;
 import com.jordanrevata.tecscrum.services.ApiServiceGenerator;
@@ -36,6 +37,7 @@ import com.jordanrevata.tecscrum.services.DailyJobService;
 import com.jordanrevata.tecscrum.services.NotificationHelper;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -49,12 +51,14 @@ public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private RecyclerView recyclerview_projects;
+    public List<Project> projectList;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        projectList = new ArrayList<>();
 
         boolean verifyExistUser = UserRepository.verifyLogeo();
 
@@ -130,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
             initialize();
 
 
+
             FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(MainActivity.this));
 
             Job myJob = dispatcher.newJobBuilder()
@@ -175,8 +180,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerview_projects.setAdapter(new ProjectAdapter(this));
 
 
-
-
         ApiService api = ApiServiceGenerator.createService(ApiService.class);
 
         Call<List<Project>> projects = api.getProjectsByUser(UserRepository.getUser().getIdusers());
@@ -192,12 +195,14 @@ public class MainActivity extends AppCompatActivity {
                     if (response.isSuccessful()) {
 
 
-                        List<Project> projectList = response.body();
+                        projectList = response.body();
 
 
                         ProjectAdapter projectAdapter = (ProjectAdapter) recyclerview_projects.getAdapter();
                         projectAdapter.setProjects(projectList);
                         projectAdapter.notifyDataSetChanged();
+
+                        saveData(projectList);
 
                         Log.e(TAG, projectList.toString());
 
@@ -234,10 +239,9 @@ public class MainActivity extends AppCompatActivity {
 
         new AlertDialog.Builder(MainActivity.this)
                 .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("Cerrar Sesión")
+                .setTitle("Log Out")
                 .setMessage("¿Está seguro de cerrar sesión?")
-                .setPositiveButton("Si", new DialogInterface.OnClickListener()
-                {
+                .setPositiveButton("Si", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
@@ -252,12 +256,14 @@ public class MainActivity extends AppCompatActivity {
                                 try {
 
                                     int statusCode = response.code();
-                                    Log.d(TAG, "HTTP status code: " + statusCode );
+                                    Log.d(TAG, "HTTP status code: " + statusCode);
 
                                     if (response.isSuccessful()) {
 
-                                        Intent intentLogin = new Intent(MainActivity.this , LoginActivity.class);
+                                        Intent intentLogin = new Intent(MainActivity.this, LoginActivity.class);
                                         UserRepository.logout();
+                                        SavedRepository.deleteSave();
+                                        ProjectRepository.deleteProjects();
                                         finish();
                                         startActivity(intentLogin);
 
@@ -270,7 +276,8 @@ public class MainActivity extends AppCompatActivity {
                                     try {
                                         Log.e(TAG, "onThrowable: " + t.toString(), t);
                                         Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
-                                    }catch (Throwable x){}
+                                    } catch (Throwable x) {
+                                    }
                                 }
 
 
@@ -288,6 +295,19 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .setNegativeButton("No", null)
                 .show();
+
+    }
+
+    //Método encargado de guardar los proyectos, será de importancia en las notificaciones
+    private void saveData(List<Project> projects){
+
+        if(SavedRepository.verifySave()){
+            SavedRepository.create(UserRepository.getUser().getIdusers(), UserRepository.getUser().getToken());
+            ProjectRepository.saveProjects(projects);
+        }else{
+            ProjectRepository.deleteProjects();
+            ProjectRepository.saveProjects(projects);
+        }
 
     }
 

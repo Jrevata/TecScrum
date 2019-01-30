@@ -1,5 +1,9 @@
 package com.jordanrevata.tecscrum.models;
 
+
+import com.orm.dsl.Table;
+
+@Table
 public class Project {
 
     private Integer idprojects;
@@ -68,5 +72,18 @@ public class Project {
 
     public void setNumber_members(Integer number_members) {
         this.number_members = number_members;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Project{" +
+                "idprojects=" + idprojects +
+                ", project_name='" + project_name + '\'' +
+                ", number_sprints=" + number_sprints +
+                ", start_date='" + start_date + '\'' +
+                ", end_date='" + end_date + '\'' +
+                ", number_members=" + number_members +
+                '}';
     }
 }

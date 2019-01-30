@@ -19,10 +19,17 @@ import com.firebase.jobdispatcher.JobService;
 import com.jordanrevata.tecscrum.R;
 import com.jordanrevata.tecscrum.activities.DailyActivity;
 import com.jordanrevata.tecscrum.activities.MainActivity;
+import com.jordanrevata.tecscrum.models.Daily;
+import com.jordanrevata.tecscrum.models.Sprint;
 import com.jordanrevata.tecscrum.utilities.Constant;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.chrono.JapaneseDate;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class DailyJobService extends JobService {
@@ -110,6 +117,159 @@ public class DailyJobService extends JobService {
         }catch (Exception e){
             Log.e(TAG, e.toString());
         }
+
+    }
+
+    public static Integer calculateDays(String start, String end){
+
+        int contador = 0;
+
+        try {
+
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date date_start = sdf.parse(start);
+            Date date_end  = sdf.parse(end);
+
+            Calendar start_calendar = Calendar. getInstance();
+            start_calendar.setTime(date_start);
+            Calendar end_calendar = Calendar. getInstance();
+            end_calendar.setTime(date_end);
+
+            while (start_calendar.before(end_calendar) || start_calendar.equals(end_calendar)){
+
+                if(start_calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY && start_calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY)
+                    contador++;
+
+                start_calendar.add(Calendar.DATE, 1);
+
+            }
+
+
+
+        } catch (ParseException e) {
+
+            e.printStackTrace();
+        }
+
+        return contador;
+
+    }
+
+    public static  List<Daily> objetos(List<Daily> dailies, String dateinicio, String datefinal){
+
+        List<Daily> dailies1 = new ArrayList<>();
+        int contador = 0;
+
+        Calendar start_sprint = convertToCalendar(dateinicio);
+        Calendar end_sprint = convertToCalendar(datefinal);
+        Calendar now = Calendar.getInstance();
+        if(now.after(end_sprint)){
+
+            while (start_sprint.before(end_sprint) || start_sprint.equals(end_sprint)){
+
+                if(start_sprint.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY && start_sprint.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY){
+
+                    contador++;
+
+                    Daily daily = findDailybyDate(dailies, start_sprint);
+
+                    if(daily == null){
+                        Daily daily1 = new Daily();
+                        daily1.setDailyname("Daily " + contador);
+                        daily1.setDate_daily(convertToString(start_sprint));
+                        daily1.setState(false);
+                        dailies.add(daily1);
+                    }else {
+                        dailies.add(daily);
+                    }
+
+                }
+
+
+                start_sprint.add(Calendar.DATE,1);
+
+            }
+
+        }
+        if(now.before(end_sprint) || now.equals(end_sprint)  ){
+            if(now.after(start_sprint) || now.equals(start_sprint)) {
+
+                while (start_sprint.before(now) || start_sprint.equals(now)) {
+
+                    if (start_sprint.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY && start_sprint.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
+
+                        contador++;
+                        Daily daily = findDailybyDate(dailies, start_sprint);
+
+                        if (daily == null) {
+                            Daily daily1 = new Daily();
+                            daily1.setDailyname("Daily " + contador);
+                            daily1.setDate_daily(convertToString(start_sprint));
+                            daily1.setState(false);
+                            dailies.add(daily1);
+                        } else {
+                            dailies.add(daily);
+                        }
+
+                    }
+
+
+                    start_sprint.add(Calendar.DATE, 1);
+
+                }
+
+            }
+
+        }
+
+
+
+        return dailies1;
+    }
+
+
+    public static Daily findDailybyDate(List<Daily> dailies,Calendar calendar){
+
+        Daily daily = new Daily();
+
+        for(Daily daily1: dailies){
+
+            Calendar calendar1 = convertToCalendar(daily1.getDate_daily());
+            if(calendar1.equals(calendar)){
+                return daily;
+            }
+
+        }
+
+        return null;
+
+    }
+
+    public static Calendar convertToCalendar(String date){
+
+        Calendar calendar = Calendar.getInstance();
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date date_start = sdf.parse(date);
+
+            calendar.setTime(date_start);
+        }catch (ParseException e){
+            e.printStackTrace();
+        }
+
+        return calendar;
+    }
+
+    public static String convertToString(Calendar calendar){
+
+        String date = null;
+
+        Date date1 = calendar.getTime();
+        SimpleDateFormat format1 = new SimpleDateFormat("yyy-MM-dd");
+        date = format1.format(date1);
+
+        return date;
 
     }
 

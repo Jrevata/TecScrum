@@ -123,9 +123,9 @@ public class UserEditActivity extends AppCompatActivity {
 
     private void save() {
 
-        String givenName = editText_name_edit.getText().toString();
-        String familyName = editText_lastname_edit.getText().toString();
-        String phone = editText_phone_edit.getText().toString();
+        final String givenName = editText_name_edit.getText().toString();
+        final String familyName = editText_lastname_edit.getText().toString();
+        final String phone = editText_phone_edit.getText().toString();
 
         if(givenName.isEmpty() || familyName.isEmpty() || phone.isEmpty()){
 
@@ -148,7 +148,7 @@ public class UserEditActivity extends AppCompatActivity {
 
             Bitmap bitmap = BitmapFactory.decodeFile(file.getPath());
 
-            bitmap = scaleBitmapDown(bitmap, 200);
+            bitmap = scaleBitmapDown(bitmap, 300);
 
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
@@ -177,7 +177,19 @@ public class UserEditActivity extends AppCompatActivity {
                     if (response.isSuccessful()) {
 
                         ResponseMessage responseMessage = response.body();
+
+                        User user = UserRepository.getUser();
+                        user.setGivenName(givenName);
+                        user.setPhone(phone);
+                        user.setFamilyName(familyName);
+                        user.setImage(responseMessage.getMessage());
+                        user.setFullname(givenName+" "+familyName);
+
+
                         Log.d(TAG, "responseMessage: " + responseMessage);
+
+                        UserRepository.updateUser(user);
+                        Log.d(TAG, "User update: " + UserRepository.getUser());
 
                         Toast.makeText(UserEditActivity.this, responseMessage.getMessage(), Toast.LENGTH_LONG).show();
                         finish();
