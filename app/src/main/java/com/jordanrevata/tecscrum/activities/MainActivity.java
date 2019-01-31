@@ -25,6 +25,7 @@ import com.firebase.jobdispatcher.Lifetime;
 import com.firebase.jobdispatcher.Trigger;
 import com.jordanrevata.tecscrum.R;
 import com.jordanrevata.tecscrum.adapters.ProjectAdapter;
+import com.jordanrevata.tecscrum.fragments.SprintListFragment;
 import com.jordanrevata.tecscrum.models.Daily;
 import com.jordanrevata.tecscrum.models.Project;
 import com.jordanrevata.tecscrum.models.User;
@@ -285,6 +286,10 @@ public class MainActivity extends AppCompatActivity {
 
                             @Override
                             public void onFailure(Call<Void> call, Throwable t) {
+
+                                Log.e(TAG, "onFailure: " + t.toString());
+                                Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+
 
                             }
                         });

@@ -17,10 +17,13 @@ import com.jordanrevata.tecscrum.R;
 import com.jordanrevata.tecscrum.activities.DailyActivity;
 import com.jordanrevata.tecscrum.models.Daily;
 import com.jordanrevata.tecscrum.models.Forum;
+import com.jordanrevata.tecscrum.services.DailyJobService;
 
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class DailyAdapter extends RecyclerView.Adapter<DailyAdapter.ViewHolder> {
@@ -75,26 +78,52 @@ public class DailyAdapter extends RecyclerView.Adapter<DailyAdapter.ViewHolder> 
 
 
 
-        viewHolder.textview_dailycheckname.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intentDaily = new Intent(fragment.getContext(), DailyActivity.class);
-                fragment.startActivity(intentDaily);
-            }
-        });
 
-        if(daily.getIddailies() == 1){
-            viewHolder.imageview_daily.setBackgroundResource(R.drawable.img_check_pending);
-            viewHolder.textview_dailycheckname.setTextColor(viewHolder.textview_dailycheckname.getResources().getColor(R.color.colorPrimary));
-            viewHolder.textview_dailycheckname.setTypeface(Typeface.DEFAULT_BOLD);
-        }else{
-            viewHolder.textview_dailycheckname.setTextColor(viewHolder.textview_dailycheckname.getResources().getColor(R.color.Black_Eel));
-            viewHolder.textview_dailycheckname.setTypeface(Typeface.DEFAULT);
 
-            if (daily.getState())
-                viewHolder.imageview_daily.setBackgroundResource(R.drawable.img_check_finish);
-            else
+        if(daily.getIddailies()==null){
+
+            Calendar nowCalendar = Calendar.getInstance();
+            String now = DailyJobService.convertToString(nowCalendar);
+
+            if(now.equals(daily.getDate_daily())){
+
+                viewHolder.imageview_daily.setBackgroundResource(R.drawable.img_check_pending);
+                viewHolder.textview_dailycheckname.setTextColor(viewHolder.textview_dailycheckname.getResources().getColor(R.color.colorPrimary));
+                viewHolder.textview_dailycheckname.setTypeface(Typeface.DEFAULT_BOLD);
+                viewHolder.textview_dailycheckname.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intentDaily = new Intent(fragment.getContext(), DailyActivity.class);
+                        intentDaily.putExtra("idsprint", daily.getSprints_idsprints());
+                        intentDaily.putExtra("iduser", daily.getUsers_idusers());
+                        intentDaily.putExtra("action" , "Edit");
+                        fragment.startActivity(intentDaily);
+                    }
+                });
+
+            }else{
+
                 viewHolder.imageview_daily.setBackgroundResource(R.drawable.img_check_bad);
+                viewHolder.textview_dailycheckname.setTextColor(viewHolder.textview_dailycheckname.getResources().getColor(R.color.Black_Eel));
+
+            }
+
+        }else{
+            viewHolder.imageview_daily.setBackgroundResource(R.drawable.img_check_finish);
+            viewHolder.textview_dailycheckname.setTextColor(viewHolder.textview_dailycheckname.getResources().getColor(R.color.Black_Eel));
+            viewHolder.textview_dailycheckname.setTypeface(Typeface.DEFAULT_BOLD);
+
+
+            viewHolder.textview_dailycheckname.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intentDaily = new Intent(fragment.getContext(), DailyActivity.class);
+                    intentDaily.putExtra("iddaily", daily.getIddailies());
+                    intentDaily.putExtra("action", "NoEdit");
+                    fragment.startActivity(intentDaily);
+                }
+            });
+
         }
 
     }

@@ -25,6 +25,8 @@ public class SprintMenuActivity extends AppCompatActivity {
     Fragment forumFragment;
 
     Integer idsprint;
+    String start_sprint;
+    String end_sprint;
 
     BottomNavigationView bottomNavigationView;
     RelativeLayout relativeLayoutSprintMenu;
@@ -34,10 +36,13 @@ public class SprintMenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sprint_menu);
 
         idsprint = getIntent().getExtras().getInt("idsprint");
+        start_sprint = getIntent().getExtras().getString("start_sprint");
+        end_sprint = getIntent().getExtras().getString("end_sprint");
 
         final Bundle bundleSprint = new Bundle();
         bundleSprint.putInt("idsprint", idsprint);
-
+        bundleSprint.putString("start_sprint", start_sprint);
+        bundleSprint.putString("end_sprint",end_sprint);
 
         relativeLayoutSprintMenu = findViewById(R.id.content_menu_sprint);
         bottomNavigationView =  findViewById(R.id.bottom_navigation_sprint_menu);

@@ -156,7 +156,7 @@ public class DailyJobService extends JobService {
 
     }
 
-    public static  List<Daily> objetos(List<Daily> dailies, String dateinicio, String datefinal){
+    public static  List<Daily> generateDailies(List<Daily> dailies, String dateinicio, String datefinal, Integer idsprint, Integer iduser){
 
         List<Daily> dailies1 = new ArrayList<>();
         int contador = 0;
@@ -176,12 +176,15 @@ public class DailyJobService extends JobService {
 
                     if(daily == null){
                         Daily daily1 = new Daily();
+                        daily1.setSprints_idsprints(idsprint);
+                        daily1.setUsers_idusers(iduser);
                         daily1.setDailyname("Daily " + contador);
                         daily1.setDate_daily(convertToString(start_sprint));
-                        daily1.setState(false);
-                        dailies.add(daily1);
+                        daily1.setState(0);
+                        dailies1.add(daily1);
                     }else {
-                        dailies.add(daily);
+                        daily.setDailyname("Daily " + contador);
+                        dailies1.add(daily);
                     }
 
                 }
@@ -204,12 +207,15 @@ public class DailyJobService extends JobService {
 
                         if (daily == null) {
                             Daily daily1 = new Daily();
+                            daily1.setSprints_idsprints(idsprint);
+                            daily1.setUsers_idusers(iduser);
                             daily1.setDailyname("Daily " + contador);
                             daily1.setDate_daily(convertToString(start_sprint));
-                            daily1.setState(false);
-                            dailies.add(daily1);
+                            daily1.setState(0);
+                            dailies1.add(daily1);
                         } else {
-                            dailies.add(daily);
+                            daily.setDailyname("Daily " + contador);
+                            dailies1.add(daily);
                         }
 
                     }
@@ -231,13 +237,13 @@ public class DailyJobService extends JobService {
 
     public static Daily findDailybyDate(List<Daily> dailies,Calendar calendar){
 
-        Daily daily = new Daily();
+
 
         for(Daily daily1: dailies){
 
             Calendar calendar1 = convertToCalendar(daily1.getDate_daily());
             if(calendar1.equals(calendar)){
-                return daily;
+                return daily1;
             }
 
         }

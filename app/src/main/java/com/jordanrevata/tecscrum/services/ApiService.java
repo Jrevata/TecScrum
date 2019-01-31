@@ -1,6 +1,7 @@
 package com.jordanrevata.tecscrum.services;
 
 import com.jordanrevata.tecscrum.models.Credential;
+import com.jordanrevata.tecscrum.models.Daily;
 import com.jordanrevata.tecscrum.models.Forum;
 import com.jordanrevata.tecscrum.models.Login;
 import com.jordanrevata.tecscrum.models.Project;
@@ -62,4 +63,10 @@ public interface ApiService {
                                               @Part("familyName") RequestBody familyName,
                                               @Part("phone") RequestBody phone,
                                               @Part MultipartBody.Part image);
+
+    @GET("api/dailies/listDailies/{idsprint}/{iduser}")
+    Call<List<Daily>> getDailies(@Path("idsprint") int idsprint,
+                           @Path("iduser") int iduser);
+
+
 }

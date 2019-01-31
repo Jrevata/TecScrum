@@ -1,28 +1,47 @@
 package com.jordanrevata.tecscrum.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.jordanrevata.tecscrum.R;
+import com.jordanrevata.tecscrum.activities.LoginActivity;
+import com.jordanrevata.tecscrum.activities.MainActivity;
 import com.jordanrevata.tecscrum.adapters.DailyAdapter;
 import com.jordanrevata.tecscrum.models.Daily;
 import com.jordanrevata.tecscrum.repositories.DailyRepository;
+import com.jordanrevata.tecscrum.repositories.ProjectRepository;
+import com.jordanrevata.tecscrum.repositories.SavedRepository;
+import com.jordanrevata.tecscrum.repositories.UserRepository;
+import com.jordanrevata.tecscrum.services.ApiService;
+import com.jordanrevata.tecscrum.services.ApiServiceGenerator;
 import com.jordanrevata.tecscrum.services.DailyJobService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class DailyListFragment extends Fragment {
 
-    RecyclerView recyclerview_dailies;
+    private final  String TAG = DailyListFragment.class.getSimpleName();
+
+    private RecyclerView recyclerview_dailies;
+    private Integer idsprint;
+    private String start_sprint;
+    private String end_sprint;
 
     public DailyListFragment() {
     }
@@ -32,24 +51,85 @@ public class DailyListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
+
+        idsprint = getArguments().getInt("idsprint");
+        start_sprint = getArguments().getString("start_sprint");
+        end_sprint   = getArguments().getString("end_sprint");
+
+        Log.d(TAG, "on create Fragment Dailies" + idsprint.toString() + start_sprint + end_sprint);
+
         View view = inflater.inflate(R.layout.fragment_daily_list, container, false);
 
         recyclerview_dailies = view.findViewById(R.id.recyclerview_daily_list);
         recyclerview_dailies.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerview_dailies.setAdapter(new DailyAdapter(this));
 
-
-        List<Daily> asd = new ArrayList<>();
-
-        DailyAdapter dailyAdapter = (DailyAdapter) recyclerview_dailies.getAdapter();
-        dailyAdapter.setDailies(DailyJobService.objetos(asd, "01-01-2019", "2019-01-22"));
-        dailyAdapter.notifyDataSetChanged();
-
-        Integer prueba = DailyJobService.calculateDays("2019-01-01" , "2019-01-03");
-        Toast.makeText(DailyListFragment.this.getContext(), prueba.toString(),Toast.LENGTH_LONG).show();
+        initialize();
 
         return view;
+
     }
+
+    private void initialize(){
+
+        Toast.makeText(DailyListFragment.this.getContext(), idsprint.toString() + start_sprint + end_sprint, Toast.LENGTH_LONG).show();
+
+
+        ApiService api = ApiServiceGenerator.createService(ApiService.class);
+
+        Call<List<Daily>> dailies = api.getDailies(idsprint, UserRepository.getUser().getIdusers());
+
+        dailies.enqueue(new Callback<List<Daily>>() {
+            @Override
+            public void onResponse(Call<List<Daily>> call, Response<List<Daily>> response) {
+                try {
+
+                    int statusCode = response.code();
+                    Log.d(TAG, "HTTP status code: " + statusCode);
+
+                    if (response.isSuccessful()) {
+
+                        List<Daily> dailiesResponse;
+                        dailiesResponse = response.body();
+
+
+
+                        List<Daily> dailiesGenerate = DailyJobService.generateDailies(dailiesResponse, start_sprint, end_sprint, idsprint, UserRepository.getUser().getIdusers());
+
+                        Collections.reverse(dailiesGenerate);
+
+                        DailyAdapter dailyAdapter = (DailyAdapter) recyclerview_dailies.getAdapter();
+                        dailyAdapter.setDailies(dailiesGenerate);
+                        dailyAdapter.notifyDataSetChanged();
+
+
+                    } else {
+                        Log.e(TAG, "onError: " + response.errorBody().string());
+                        throw new Exception("Error en el servicio");
+                    }
+
+                } catch (Throwable t) {
+                    try {
+                        Log.e(TAG, "onThrowable: " + t.toString(), t);
+                        Toast.makeText(DailyListFragment.this.getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+                    } catch (Throwable x) {
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Daily>> call, Throwable t) {
+
+                Log.e(TAG, "onFailure: " + t.toString());
+                Toast.makeText(DailyListFragment.this.getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+
+            }
+        });
+
+    }
+
 
 
 

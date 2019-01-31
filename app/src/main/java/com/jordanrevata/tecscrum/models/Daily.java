@@ -9,9 +9,10 @@ public class Daily {
     private String what_did;
     private String what_willdo;
     private String date_daily;
-    private Boolean state;
+    private Integer state;
 
-    public Daily(Integer iddailies, Integer sprints_idsprints, Integer users_idusers,String dailyname, String what_did, String what_willdo, String date_daily, Boolean state) {
+    public Daily(Integer iddailies, Integer sprints_idsprints, Integer users_idusers,String dailyname, String what_did, String what_willdo, String date_daily, Integer state) {
+
         this.iddailies = iddailies;
         this.sprints_idsprints = sprints_idsprints;
         this.users_idusers = users_idusers;
@@ -20,6 +21,7 @@ public class Daily {
         this.what_willdo = what_willdo;
         this.date_daily = date_daily;
         this.state = state;
+
     }
 
     public Daily(){}
@@ -81,11 +83,11 @@ public class Daily {
         this.date_daily = date_daily;
     }
 
-    public Boolean getState() {
+    public Integer getState() {
         return state;
     }
 
-    public void setState(Boolean state) {
+    public void setState(Integer state) {
         this.state = state;
     }
 }
