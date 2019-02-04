@@ -37,5 +37,6 @@
 
     <!-- Notifications -->
     <string name="daily_text">Toque para completar el formulario diario</string>
+    <string name="confirm">Confirmar</string>
 
 </resources>

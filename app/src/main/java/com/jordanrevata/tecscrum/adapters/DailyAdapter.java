@@ -78,9 +78,6 @@ public class DailyAdapter extends RecyclerView.Adapter<DailyAdapter.ViewHolder> 
         viewHolder.textview_dailycheckdate.setText(daily.getDate_daily());
 
 
-
-
-
         if(daily.getIddailies()==null){
 
             Calendar nowCalendar = Calendar.getInstance();
@@ -97,6 +94,8 @@ public class DailyAdapter extends RecyclerView.Adapter<DailyAdapter.ViewHolder> 
                         Intent intentDaily = new Intent(fragment.getContext(), DailyActivity.class);
                         intentDaily.putExtra("idsprint", daily.getSprints_idsprints());
                         intentDaily.putExtra("iduser", daily.getUsers_idusers());
+                        intentDaily.putExtra("date", daily.getDate_daily());
+                        intentDaily.putExtra("name", daily.getDailyname());
                         intentDaily.putExtra("action" , "Edit");
                         fragment.startActivity(intentDaily);
                     }
@@ -106,7 +105,8 @@ public class DailyAdapter extends RecyclerView.Adapter<DailyAdapter.ViewHolder> 
 
                 viewHolder.imageview_daily.setBackgroundResource(R.drawable.img_check_bad);
                 viewHolder.textview_dailycheckname.setTextColor(viewHolder.textview_dailycheckname.getResources().getColor(R.color.Black_Eel));
-
+                viewHolder.textview_dailycheckname.setTypeface(Typeface.DEFAULT);
+                viewHolder.textview_dailycheckname.setClickable(false);
             }
 
         }else{
@@ -120,6 +120,8 @@ public class DailyAdapter extends RecyclerView.Adapter<DailyAdapter.ViewHolder> 
                 public void onClick(View v) {
                     Intent intentDaily = new Intent(fragment.getContext(), DailyActivity.class);
                     intentDaily.putExtra("iddaily", daily.getIddailies());
+                    intentDaily.putExtra("name", daily.getDailyname());
+                    intentDaily.putExtra("date", daily.getDate_daily());
                     intentDaily.putExtra("action", "NoEdit");
                     fragment.startActivity(intentDaily);
                 }

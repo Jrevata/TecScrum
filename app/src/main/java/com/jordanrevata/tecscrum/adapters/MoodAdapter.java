@@ -17,6 +17,7 @@ import com.jordanrevata.tecscrum.activities.DailyActivity;
 import com.jordanrevata.tecscrum.activities.MoodTodayActivity;
 import com.jordanrevata.tecscrum.models.Daily;
 import com.jordanrevata.tecscrum.models.MoodToday;
+import com.jordanrevata.tecscrum.repositories.UserRepository;
 import com.jordanrevata.tecscrum.utilities.Function;
 
 import java.util.ArrayList;
@@ -91,6 +92,9 @@ public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.ViewHolder>  {
 
                         Intent intentMood = new Intent(fragment.getContext(), MoodTodayActivity.class);
                         intentMood.putExtra("idsprint", moodToday.getSprints_idsprints());
+                        intentMood.putExtra("iduser", UserRepository.getUser().getIdusers());
+                        intentMood.putExtra("date", moodToday.getDate_mood());
+                        intentMood.putExtra("name", moodToday.getMoodname());
                         intentMood.putExtra("action", "Edit");
                         fragment.startActivity(intentMood);
                     }
@@ -100,6 +104,8 @@ public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.ViewHolder>  {
             }else{
                 viewHolder.imageview_moodtoday.setBackgroundResource(R.drawable.img_check_bad);
                 viewHolder.textview_moodcheckname.setTextColor(viewHolder.textview_moodcheckname.getResources().getColor(R.color.Black_Eel));
+                viewHolder.textview_moodcheckname.setTypeface(Typeface.DEFAULT);
+                viewHolder.textview_moodcheckname.setClickable(false);
 
             }
 
@@ -114,8 +120,10 @@ public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.ViewHolder>  {
             viewHolder.textview_moodcheckname.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intentMood = new Intent(fragment.getContext(), DailyActivity.class);
+                    Intent intentMood = new Intent(fragment.getContext(), MoodTodayActivity.class);
                     intentMood.putExtra("idmood", moodToday.getIdmoodtoday());
+                    intentMood.putExtra("name", moodToday.getMoodname());
+                    intentMood.putExtra("date", moodToday.getDate_mood());
                     intentMood.putExtra("action", "NoEdit");
                     fragment.startActivity(intentMood);
                 }

@@ -12,13 +12,13 @@ import java.util.List;
 
 public class Function {
 
-    public static List<Daily> generateDailies(List<Daily> dailies, String dateinicio, String datefinal, Integer idsprint, Integer iduser){
+    public static List<Daily> generateDailies(List<Daily> dailies, String date_start, String date_final, Integer idsprint, Integer iduser){
 
         List<Daily> dailies1 = new ArrayList<>();
         int contador = 0;
 
-        Calendar start_sprint = convertToCalendar(dateinicio);
-        Calendar end_sprint = convertToCalendar(datefinal);
+        Calendar start_sprint = convertToCalendar(date_start);
+        Calendar end_sprint = convertToCalendar(date_final);
         Calendar now = Calendar.getInstance();
         if(now.after(end_sprint)){
 
@@ -90,13 +90,13 @@ public class Function {
         return dailies1;
     }
 
-    public static List<MoodToday> generateMoodTodays(List<MoodToday> moodTodays, String dateinicio, String datefinal, Integer idsprint, Integer iduser){
+    public static List<MoodToday> generateMoodTodays(List<MoodToday> moodTodays, String date_start, String date_final, Integer idsprint, Integer iduser){
 
         List<MoodToday> moodTodays1 = new ArrayList<>();
         int contador = 0;
 
-        Calendar start_sprint = convertToCalendar(dateinicio);
-        Calendar end_sprint = convertToCalendar(datefinal);
+        Calendar start_sprint = convertToCalendar(date_start);
+        Calendar end_sprint = convertToCalendar(date_final);
         Calendar now = Calendar.getInstance();
         if(now.after(end_sprint)){
 
@@ -226,6 +226,5 @@ public class Function {
         return date;
 
     }
-
 
 }

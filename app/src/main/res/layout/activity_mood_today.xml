@@ -206,7 +206,7 @@
                 </LinearLayout>
 
                 <RadioGroup
-                    android:id="@+id/radio_emotions"
+                    android:id="@+id/radio_group_emotions"
                     xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_below="@id/linealayout_emotionnames"
                     android:layout_width="match_parent"
@@ -224,7 +224,8 @@
                             android:theme="@style/MyRadioButton"
                             android:layout_weight="1"
                             android:layout_gravity="center"
-
+                            android:onClick="onRadioEmotionClicked"
+                            tools:ignore="OnClick"
                             />
                     </FrameLayout>
 
@@ -239,7 +240,8 @@
                             android:layout_weight="1"
                             android:theme="@style/MyRadioButton"
                             android:layout_gravity="center"
-
+                            android:onClick="onRadioEmotionClicked"
+                            tools:ignore="OnClick"
                             />
                     </FrameLayout>
 
@@ -254,6 +256,8 @@
                             android:layout_weight="1"
                             android:layout_gravity="center"
                             android:theme="@style/MyRadioButton"
+                            android:onClick="onRadioEmotionClicked"
+                            tools:ignore="OnClick"
                             />
                     </FrameLayout>
 
@@ -268,6 +272,8 @@
                             android:layout_weight="1"
                             android:theme="@style/MyRadioButton"
                             android:layout_gravity="center"
+                            android:onClick="onRadioEmotionClicked"
+                            tools:ignore="OnClick"
                             />
                     </FrameLayout>
 
@@ -282,6 +288,8 @@
                             android:layout_weight="1"
                             android:theme="@style/MyRadioButton"
                             android:layout_gravity="center"
+                            android:onClick="onRadioEmotionClicked"
+                            tools:ignore="OnClick"
 
                             />
                     </FrameLayout>
@@ -299,7 +307,7 @@
                     android:fontFamily="@font/lato"
                     android:layout_height="wrap_content"
                     android:text="@string/dedicated_question"
-                    android:layout_below="@+id/radio_emotions"/>
+                    android:layout_below="@+id/radio_group_emotions"/>
 
 
                 <LinearLayout
@@ -362,7 +370,7 @@
                 </LinearLayout>
 
                 <RadioGroup
-                    android:id="@+id/radio_grouptimededicated"
+                    android:id="@+id/radio_group_timededicated"
                     xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_below="@id/linearlayout_dedicatedtime"
                     android:layout_width="match_parent"
@@ -380,7 +388,8 @@
                             android:theme="@style/MyRadioButton"
                             android:layout_weight="1"
                             android:layout_gravity="center"
-
+                            android:onClick="onRadioDedicatedClicked"
+                            tools:ignore="OnClick"
                             />
                     </FrameLayout>
 
@@ -395,7 +404,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_gravity="center"
-
+                            android:onClick="onRadioDedicatedClicked"
+                            tools:ignore="OnClick"
                             />
                     </FrameLayout>
 
@@ -410,7 +420,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_gravity="center"
-
+                            android:onClick="onRadioDedicatedClicked"
+                            tools:ignore="OnClick"
                             />
                     </FrameLayout>
 
@@ -425,7 +436,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_gravity="center"
-
+                            android:onClick="onRadioDedicatedClicked"
+                            tools:ignore="OnClick"
                             />
                     </FrameLayout>
 
@@ -440,7 +452,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_gravity="center"
-
+                            android:onClick="onRadioDedicatedClicked"
+                            tools:ignore="OnClick"
                             />
                     </FrameLayout>
 
@@ -458,7 +471,7 @@
                     android:fontFamily="@font/lato"
                     android:layout_height="wrap_content"
                     android:text="@string/difficulties_question"
-                    android:layout_below="@+id/radio_grouptimededicated"/>
+                    android:layout_below="@+id/radio_group_timededicated"/>
 
                 <EditText
                     android:id="@+id/editText_difficultiestoday"
@@ -472,7 +485,7 @@
 
 
                 <Button
-                    android:id="@+id/button_senddaily"
+                    android:id="@+id/button_sendmoodtoday"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/editText_difficultiestoday"

@@ -43,6 +43,15 @@ public class DailyListFragment extends Fragment {
     private Integer idsprint;
     private String start_sprint;
     private String end_sprint;
+    DailyAdapter dailyAdapter;
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        recyclerview_dailies.setAdapter(null);
+        initialize();
+    }
 
     public DailyListFragment() {
     }
@@ -63,8 +72,7 @@ public class DailyListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_daily_list, container, false);
 
         recyclerview_dailies = view.findViewById(R.id.recyclerview_daily_list);
-        recyclerview_dailies.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerview_dailies.setAdapter(new DailyAdapter(this));
+        recyclerview_dailies.setAdapter(null);
 
         initialize();
 
@@ -73,6 +81,10 @@ public class DailyListFragment extends Fragment {
     }
 
     private void initialize(){
+
+
+        recyclerview_dailies.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerview_dailies.setAdapter(new DailyAdapter(this));
 
         Toast.makeText(DailyListFragment.this.getContext(), idsprint.toString() + start_sprint + end_sprint, Toast.LENGTH_LONG).show();
 
@@ -100,7 +112,7 @@ public class DailyListFragment extends Fragment {
 
                         Collections.reverse(dailiesGenerate);
 
-                        DailyAdapter dailyAdapter = (DailyAdapter) recyclerview_dailies.getAdapter();
+                        dailyAdapter = (DailyAdapter) recyclerview_dailies.getAdapter();
                         dailyAdapter.setDailies(dailiesGenerate);
                         dailyAdapter.notifyDataSetChanged();
 

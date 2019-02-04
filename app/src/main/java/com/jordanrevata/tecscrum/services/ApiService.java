@@ -69,10 +69,21 @@ public interface ApiService {
     Call<List<Daily>> getDailies(@Path("idsprint") int idsprint,
                            @Path("iduser") int iduser);
 
-
     @GET("api/moodtoday/listMoodTodays/{idsprint}/{iduser}")
     Call<List<MoodToday>> getMoodTodays(@Path("idsprint") int idsprint,
                                         @Path("iduser") int iduser);
 
+    @GET("api/dailies/show/{id}")
+    Call<Daily> getDaily(@Path("id") int id);
+
+    @POST("api/dailies/store")
+    Call<ResponseMessage> createDaily(@Body Daily daily);
+
+
+    @GET("api/moodtoday/show/{id}")
+    Call<MoodToday> getMoodToday(@Path("id") int id);
+
+    @POST("api/moodtoday/store")
+    Call<ResponseMessage> createMoodToday(@Body MoodToday moodToday);
 
 }

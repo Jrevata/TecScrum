@@ -28,7 +28,7 @@
 
 
     <style name="MyRadioButton" parent="Theme.AppCompat.Light">
-        <item name="colorControlNormal">@color/Indigo</item>
+        <item name="colorControlNormal">@color/appreparto4</item>
         <item name="colorControlActivated">@color/colorPrimary</item>
     </style>
 

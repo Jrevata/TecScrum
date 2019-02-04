@@ -43,6 +43,13 @@ public class MoodTodayListFragment extends Fragment {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        initialize();
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
