@@ -18,6 +18,7 @@ import com.jordanrevata.tecscrum.activities.DailyActivity;
 import com.jordanrevata.tecscrum.models.Daily;
 import com.jordanrevata.tecscrum.models.Forum;
 import com.jordanrevata.tecscrum.services.DailyJobService;
+import com.jordanrevata.tecscrum.utilities.Function;
 
 import org.w3c.dom.Text;
 
@@ -83,7 +84,7 @@ public class DailyAdapter extends RecyclerView.Adapter<DailyAdapter.ViewHolder> 
         if(daily.getIddailies()==null){
 
             Calendar nowCalendar = Calendar.getInstance();
-            String now = DailyJobService.convertToString(nowCalendar);
+            String now = Function.convertToString(nowCalendar);
 
             if(now.equals(daily.getDate_daily())){
 

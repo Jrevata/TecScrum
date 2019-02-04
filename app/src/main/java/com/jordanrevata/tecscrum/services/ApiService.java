@@ -4,6 +4,7 @@ import com.jordanrevata.tecscrum.models.Credential;
 import com.jordanrevata.tecscrum.models.Daily;
 import com.jordanrevata.tecscrum.models.Forum;
 import com.jordanrevata.tecscrum.models.Login;
+import com.jordanrevata.tecscrum.models.MoodToday;
 import com.jordanrevata.tecscrum.models.Project;
 import com.jordanrevata.tecscrum.models.ResponseMessage;
 import com.jordanrevata.tecscrum.models.Sprint;
@@ -67,6 +68,11 @@ public interface ApiService {
     @GET("api/dailies/listDailies/{idsprint}/{iduser}")
     Call<List<Daily>> getDailies(@Path("idsprint") int idsprint,
                            @Path("iduser") int iduser);
+
+
+    @GET("api/moodtoday/listMoodTodays/{idsprint}/{iduser}")
+    Call<List<MoodToday>> getMoodTodays(@Path("idsprint") int idsprint,
+                                        @Path("iduser") int iduser);
 
 
 }

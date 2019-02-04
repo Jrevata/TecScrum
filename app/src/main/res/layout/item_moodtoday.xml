@@ -21,7 +21,6 @@
             <ImageView
                 android:id="@+id/imageview_moodtoday"
                 android:layout_gravity="center"
-                android:src="@drawable/img_check_finish"
                 android:layout_width="20dp"
                 android:layout_height="20dp" />
         </FrameLayout>

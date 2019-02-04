@@ -7,23 +7,23 @@ public class MoodToday {
     private Integer users_idusers;
     private String moodname;
     private Integer mood_idmood;
-    private String  dedicated_time;
+    private Integer  dedicated_iddedicated;
     private String difficulties;
     private String date_mood;
-    private Boolean state;
+    private Integer state;
 
 
     public MoodToday(){
 
     }
 
-    public MoodToday(Integer idmoodtoday, Integer sprints_idsprints, Integer users_idusers, String moodname, Integer mood_idmood, String dedicated_time, String difficulties, String date_mood, Boolean state) {
+    public MoodToday(Integer idmoodtoday, Integer sprints_idsprints, Integer users_idusers, String moodname, Integer mood_idmood, Integer dedicated_iddedicated, String difficulties, String date_mood, Integer state) {
         this.idmoodtoday = idmoodtoday;
         this.sprints_idsprints = sprints_idsprints;
         this.users_idusers = users_idusers;
         this.moodname = moodname;
         this.mood_idmood = mood_idmood;
-        this.dedicated_time = dedicated_time;
+        this.dedicated_iddedicated = dedicated_iddedicated;
         this.difficulties = difficulties;
         this.date_mood = date_mood;
         this.state = state;
@@ -70,12 +70,12 @@ public class MoodToday {
         this.mood_idmood = mood_idmood;
     }
 
-    public String getDedicated_time() {
-        return dedicated_time;
+    public Integer getDedicated_iddedicated() {
+        return dedicated_iddedicated;
     }
 
-    public void setDedicated_time(String dedicated_time) {
-        this.dedicated_time = dedicated_time;
+    public void setDedicated_iddedicated(Integer dedicated_iddedicated) {
+        this.dedicated_iddedicated = dedicated_iddedicated;
     }
 
     public String getDifficulties() {
@@ -94,11 +94,11 @@ public class MoodToday {
         this.date_mood = date_mood;
     }
 
-    public Boolean getState() {
+    public Integer getState() {
         return state;
     }
 
-    public void setState(Boolean state) {
+    public void setState(Integer state) {
         this.state = state;
     }
 }

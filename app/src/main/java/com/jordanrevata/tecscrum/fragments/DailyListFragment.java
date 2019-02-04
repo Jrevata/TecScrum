@@ -24,6 +24,7 @@ import com.jordanrevata.tecscrum.repositories.UserRepository;
 import com.jordanrevata.tecscrum.services.ApiService;
 import com.jordanrevata.tecscrum.services.ApiServiceGenerator;
 import com.jordanrevata.tecscrum.services.DailyJobService;
+import com.jordanrevata.tecscrum.utilities.Function;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -95,7 +96,7 @@ public class DailyListFragment extends Fragment {
 
 
 
-                        List<Daily> dailiesGenerate = DailyJobService.generateDailies(dailiesResponse, start_sprint, end_sprint, idsprint, UserRepository.getUser().getIdusers());
+                        List<Daily> dailiesGenerate = Function.generateDailies(dailiesResponse, start_sprint, end_sprint, idsprint, UserRepository.getUser().getIdusers());
 
                         Collections.reverse(dailiesGenerate);
 
