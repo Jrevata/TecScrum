@@ -6,21 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".activities.DailyActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar_moodform"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:title="Sprint Name - Project Name"
-        android:background="@color/colorPrimary"
-        app:titleTextColor="#fff">
 
-    </android.support.v7.widget.Toolbar>
 
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar_moodform"
         >
 
         <RelativeLayout
@@ -52,6 +43,7 @@
                 <LinearLayout
                     android:id="@+id/linearlayout_mood1"
                     android:layout_width="match_parent"
+                    android:orientation="vertical"
                     android:gravity="center"
 
                     android:layout_height="wrap_content">
@@ -64,14 +56,7 @@
                         android:textAllCaps="false"
                         android:textColor="#000"
                         android:textSize="20sp" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lato"
-                        android:text=" - "
-                        android:textAllCaps="false"
-                        android:textColor="#000"
-                        android:textSize="20sp" />
+
                     <TextView
                         android:id="@+id/textview_mooddate"
                         android:layout_width="wrap_content"

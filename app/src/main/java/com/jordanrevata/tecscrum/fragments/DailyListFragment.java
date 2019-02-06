@@ -86,7 +86,7 @@ public class DailyListFragment extends Fragment {
         recyclerview_dailies.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerview_dailies.setAdapter(new DailyAdapter(this));
 
-        Toast.makeText(DailyListFragment.this.getContext(), idsprint.toString() + start_sprint + end_sprint, Toast.LENGTH_LONG).show();
+
 
 
         ApiService api = ApiServiceGenerator.createService(ApiService.class);

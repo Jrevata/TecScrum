@@ -1,22 +1,45 @@
 package com.jordanrevata.tecscrum.repositories;
 
 import com.jordanrevata.tecscrum.models.Sprint;
+import com.orm.SugarRecord;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SprintRepository {
 
-    private static List<Sprint> sprints = new ArrayList<>();
 
-    static {
-        sprints.add(new Sprint(1,"Sprint 1", "Acabar con el modelo de negocio", "15-01-2019", "24-01-2019",1));
-        sprints.add(new Sprint(2,"Sprint 2", "Definir e implementar el diseño de las vistas de la app", "25-01-2019", "03-02-2019",1));
-        sprints.add(new Sprint(3,"Sprint 3", "Hacer pruebas de la aplicación", "04-02-2019", "13-02-2019",1));
+    public static void saveSprints(List<Sprint> sprints){
+
+        for (Sprint sprint : sprints){
+
+            SugarRecord.save(sprint);
+
+        }
+
     }
 
-    public static List<Sprint> getList(){
-        return sprints;
+    public static void deleteSprints(){
+
+        SugarRecord.deleteAll(Sprint.class);
+
     }
+
+    public static List<Sprint> getSprints(){
+
+        List<Sprint> sprintList = SugarRecord.listAll(Sprint.class);
+
+        return sprintList;
+
+    }
+
+    public static Boolean verifySprints(){
+
+        boolean verify = SugarRecord.listAll(Sprint.class).isEmpty();
+
+        return verify;
+
+    }
+
 
 }

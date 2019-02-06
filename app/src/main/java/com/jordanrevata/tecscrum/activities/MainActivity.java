@@ -31,11 +31,13 @@ import com.jordanrevata.tecscrum.models.Project;
 import com.jordanrevata.tecscrum.models.User;
 import com.jordanrevata.tecscrum.repositories.ProjectRepository;
 import com.jordanrevata.tecscrum.repositories.SavedRepository;
+import com.jordanrevata.tecscrum.repositories.SprintRepository;
 import com.jordanrevata.tecscrum.repositories.UserRepository;
 import com.jordanrevata.tecscrum.services.ApiService;
 import com.jordanrevata.tecscrum.services.ApiServiceGenerator;
 import com.jordanrevata.tecscrum.services.DailyJobService;
 import com.jordanrevata.tecscrum.services.NotificationHelper;
+import com.jordanrevata.tecscrum.utilities.Function;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -54,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerview_projects;
     public List<Project> projectList;
 
+    FirebaseJobDispatcher dispatcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,12 +118,22 @@ public class MainActivity extends AppCompatActivity {
                             break;
 
                         case R.id.nav_about:
-                            NotificationHelper notificationHelper = new NotificationHelper(getApplicationContext());
-                            notificationHelper.createNotification("Titulo", "Unos mensajes");
-                            Toast.makeText(MainActivity.this, "Go About...", Toast.LENGTH_SHORT).show();
+
+                            Function.updateProjects();
+
+
+
+
+
+
+
+
                             break;
                         case R.id.nav_logout:
-                            logOut();
+                            Function.updateSprints();
+                            Toast.makeText(MainActivity.this,String.valueOf(SprintRepository.getSprints().size()), Toast.LENGTH_SHORT).show();
+
+                            //logOut();
                             break;
                     }
 
@@ -136,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-            FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(MainActivity.this));
+            dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(MainActivity.this));
 
             Job myJob = dispatcher.newJobBuilder()
                     .setService(DailyJobService.class)
@@ -203,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
                         projectAdapter.setProjects(projectList);
                         projectAdapter.notifyDataSetChanged();
 
-                        saveData(projectList);
+
 
                         Log.e(TAG, projectList.toString());
 
@@ -265,8 +278,10 @@ public class MainActivity extends AppCompatActivity {
                                         UserRepository.logout();
                                         SavedRepository.deleteSave();
                                         ProjectRepository.deleteProjects();
+                                        dispatcher.cancelAll();
                                         finish();
                                         startActivity(intentLogin);
+
 
                                     } else {
                                         Log.e(TAG, "onError: " + response.errorBody().string());
@@ -303,18 +318,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    //Método encargado de guardar los proyectos, será de importancia en las notificaciones
-    private void saveData(List<Project> projects){
 
-        if(SavedRepository.verifySave()){
-            SavedRepository.create(UserRepository.getUser().getIdusers(), UserRepository.getUser().getToken());
-            ProjectRepository.saveProjects(projects);
-        }else{
-            ProjectRepository.deleteProjects();
-            ProjectRepository.saveProjects(projects);
-        }
-
-    }
 
 
 

@@ -76,7 +76,6 @@ public class SprintAdapter extends RecyclerView.Adapter<SprintAdapter.ViewHolder
         viewHolder.cardview_sprint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(viewHolder.cardview_sprint.getContext(), sprint.getSprint_name(), Toast.LENGTH_SHORT).show();
                 Intent intentSprint = new Intent(fragment.getContext(), SprintMenuActivity.class);
                 intentSprint.putExtra("idsprint", sprint.getIdsprints());
                 intentSprint.putExtra("start_sprint", sprint.getStart_date());

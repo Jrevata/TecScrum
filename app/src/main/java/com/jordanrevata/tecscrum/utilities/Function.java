@@ -1,7 +1,17 @@
 package com.jordanrevata.tecscrum.utilities;
 
+import android.util.Log;
+
 import com.jordanrevata.tecscrum.models.Daily;
 import com.jordanrevata.tecscrum.models.MoodToday;
+import com.jordanrevata.tecscrum.models.Project;
+import com.jordanrevata.tecscrum.models.Sprint;
+import com.jordanrevata.tecscrum.repositories.ProjectRepository;
+import com.jordanrevata.tecscrum.repositories.SavedRepository;
+import com.jordanrevata.tecscrum.repositories.SprintRepository;
+import com.jordanrevata.tecscrum.repositories.UserRepository;
+import com.jordanrevata.tecscrum.services.ApiService;
+import com.jordanrevata.tecscrum.services.ApiServiceGenerator;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -10,7 +20,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class Function {
+
+    private static final String TAG = Function.class.getSimpleName();
 
     public static List<Daily> generateDailies(List<Daily> dailies, String date_start, String date_final, Integer idsprint, Integer iduser){
 
@@ -225,6 +241,207 @@ public class Function {
 
         return date;
 
+    }
+
+    public static void updateProjects(){
+
+
+        ApiService apiService = ApiServiceGenerator.createService(ApiService.class);
+
+        Call<List<Project>> projects = apiService.getProjectsByUser(UserRepository.getUser().getIdusers());
+
+        projects.enqueue(new Callback<List<Project>>() {
+            @Override
+            public void onResponse(Call<List<Project>> call, Response<List<Project>> response) {
+
+                try {
+
+                    int statusCode = response.code();
+                    Log.d(TAG, "HTTP status code: " + statusCode);
+
+                    if (response.isSuccessful()) {
+
+                        if(!response.body().isEmpty()) {
+
+                            List<Project> projectList1 = response.body();
+                            saveDataProjects(projectList1);
+
+                        }
+
+
+                    } else {
+                        Log.e(TAG, "onError: " + response.errorBody().string());
+                        throw new Exception("Error en el servicio");
+                    }
+
+                } catch (Throwable t) {
+                    try {
+                        Log.e(TAG, "onThrowable: " + t.toString(), t);
+                        //Toast.makeText(DailyJobService.this, t.getMessage(), Toast.LENGTH_LONG).show();
+                    } catch (Throwable x) {
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Project>> call, Throwable t) {
+                Log.e(TAG, "onFailure: " + t.toString());
+                //Toast.makeText(DailyJobService.this, t.getMessage(), Toast.LENGTH_LONG).show();
+
+            }
+        });
+
+
+    }
+
+    public static void updateSprints(){
+
+
+        Integer idproject = getIdProjectByDateNow();
+
+        if(idproject != 0) {
+            ApiService apiService = ApiServiceGenerator.createService(ApiService.class);
+
+            Call<List<Sprint>> sprints = apiService.getSprintsByProject(idproject);
+
+            sprints.enqueue(new Callback<List<Sprint>>() {
+                @Override
+                public void onResponse(Call<List<Sprint>> call, Response<List<Sprint>> response) {
+
+                    try {
+
+                        int statusCode = response.code();
+                        Log.d(TAG, "HTTP status code: " + statusCode);
+
+                        if (response.isSuccessful()) {
+
+                            if(!response.body().isEmpty()) {
+
+                                List<Sprint> sprintList = response.body();
+                                saveDataSprints(sprintList);
+
+                            }
+                        } else {
+                            Log.e(TAG, "onError: " + response.errorBody().string());
+                            throw new Exception("Error en el servicio");
+                        }
+
+                    } catch (Throwable t) {
+                        try {
+                            Log.e(TAG, "onThrowable: " + t.toString(), t);
+                            //Toast.makeText(DailyJobService.this, t.getMessage(), Toast.LENGTH_LONG).show();
+                        } catch (Throwable x) {
+                        }
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<List<Sprint>> call, Throwable t) {
+
+                    Log.e(TAG, "onFailure: " + t.toString());
+                    //Toast.makeText(DailyJobService.this, t.getMessage(), Toast.LENGTH_LONG).show();
+
+                }
+            });
+
+        }else{
+
+            if(!SprintRepository.verifySprints()) {
+                SprintRepository.deleteSprints();
+            }
+        }
+
+    }
+
+    private static void saveDataProjects(List<Project> projects){
+
+        if(ProjectRepository.verifyProjects()){
+            ProjectRepository.saveProjects(projects);
+        }else{
+            ProjectRepository.deleteProjects();
+            ProjectRepository.saveProjects(projects);
+        }
+
+    }
+
+    private static void saveDataSprints(List<Sprint> sprints){
+
+        if(SprintRepository.verifySprints()) {
+            SprintRepository.saveSprints(sprints);
+        }else{
+            SprintRepository.deleteSprints();
+            SprintRepository.saveSprints(sprints);
+        }
+
+    }
+
+    public static Integer getIdProjectByDateNow(){
+
+        Integer idproject = 0;
+
+        if(!ProjectRepository.verifyProjects()) {
+
+            List<Project> projectList = ProjectRepository.getProjects();
+            Calendar now = Calendar.getInstance();
+
+            for (Project project : projectList) {
+
+                Calendar start_project = convertToCalendar(project.getStart_date());
+                Calendar end_project = convertToCalendar(project.getEnd_date());
+
+                end_project.add(Calendar.DATE, 1);
+
+                if (now.after(start_project) || now.equals(start_project)) {
+
+                    if(now.before(end_project) || now.equals(end_project)){
+
+                        return project.getIdprojects();
+
+                    }
+
+
+                }
+
+            }
+        }
+
+
+        return idproject;
+
+    }
+
+    public static Integer getIdSprintByDateNow(){
+
+        Integer idsprint = 0;
+
+        if(!SprintRepository.verifySprints()){
+
+            List<Sprint> sprintList = SprintRepository.getSprints();
+            Calendar now = Calendar.getInstance();
+
+            for(Sprint sprint : sprintList){
+
+                Calendar start_sprint = convertToCalendar(sprint.getStart_date());
+                Calendar end_sprint = convertToCalendar(sprint.getEnd_date());
+
+                end_sprint.add(Calendar.DATE, 1);
+
+                if(now.before(end_sprint) || now.equals(end_sprint)  ){
+                    if(now.after(start_sprint) || now.equals(start_sprint)) {
+                        return sprint.getIdsprints();
+                    }
+
+                }
+
+
+
+            }
+
+        }
+
+        return idsprint;
     }
 
 }

@@ -9,6 +9,14 @@ import java.util.List;
 public class ProjectRepository {
 
 
+    public static Boolean verifyProjects(){
+
+        boolean verify = SugarRecord.listAll(Project.class).isEmpty();
+
+        return verify;
+
+    }
+
 
     public static void saveProjects(List<Project> projects){
 

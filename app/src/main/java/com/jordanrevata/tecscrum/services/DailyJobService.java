@@ -9,19 +9,28 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.firebase.jobdispatcher.JobParameters;
 import com.firebase.jobdispatcher.JobService;
 import com.jordanrevata.tecscrum.R;
 import com.jordanrevata.tecscrum.activities.DailyActivity;
 import com.jordanrevata.tecscrum.activities.MainActivity;
+import com.jordanrevata.tecscrum.activities.MoodTodayActivity;
 import com.jordanrevata.tecscrum.models.Daily;
+import com.jordanrevata.tecscrum.models.MoodToday;
+import com.jordanrevata.tecscrum.models.Project;
 import com.jordanrevata.tecscrum.models.Sprint;
+import com.jordanrevata.tecscrum.repositories.ProjectRepository;
+import com.jordanrevata.tecscrum.repositories.UserRepository;
 import com.jordanrevata.tecscrum.utilities.Constant;
+import com.jordanrevata.tecscrum.utilities.Function;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,16 +41,28 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class DailyJobService extends JobService {
 
     private static final String TAG = DailyJobService.class.getSimpleName();
     Integer NOTIFICATION_ID = 1;
     //En caso el dispositivo tenga la versión 8 (Oreo) o superior
     String  CHANNEL_ID = "channel_daily";
+    Integer idproject = 0;
 
+
+
+    private void setIdproject(Integer idproject) {
+        this.idproject = idproject;
+    }
 
     @Override
     public boolean onStartJob(JobParameters job) {
+
+
 
         try{
 
@@ -64,52 +85,34 @@ public class DailyJobService extends JobService {
         try {
 
             getApplicationContext();
-            NotificationManager notificationManager = (NotificationManager)getSystemService(getApplicationContext().NOTIFICATION_SERVICE);
-
 
             Calendar now = Calendar.getInstance();
-
+            String dateNow = Function.convertToString(now);
             Calendar timestart = (Calendar) now.clone();
-            timestart.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).parse("2019-01-28 " + Constant.TIME_START_DAILY));
-            //timestart.setTime(Calendar.getInstance().getTime());
+            timestart.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).parse(dateNow + " " + Constant.TIME_START_DAILY));
+
             Calendar timeend = (Calendar) timestart.clone();
-            timeend.add(Calendar.MINUTE, 5);
+            timeend.add(Calendar.MINUTE, 1);
 
             if(timestart.before(now) && now.before(timeend)){
 
 
-                /*
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), null);
 
-                Intent intentDaily = new Intent(getApplicationContext(), DailyActivity.class);
-                intentDaily.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                if(isNetworkAvailable()) {
 
-                PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intentDaily, PendingIntent.FLAG_ONE_SHOT);
+                    Function.updateProjects();
+                    Function.updateSprints();
 
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                    Integer idSprint = Function.getIdSprintByDateNow();
+                    NotificationHelper notificationHelper = new NotificationHelper(getApplicationContext());
+                    notificationHelper.createNotification("Titulo", "Tiene internet, que emoción " + idSprint );
 
-                    CharSequence name = "Daily";
+                }else{
 
-                    NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, name, NotificationManager.IMPORTANCE_HIGH);
-                    mChannel.setDescription(getString(R.string.daily_text));
-                    mChannel.enableLights(true);
-                    mChannel.setLightColor(Color.BLUE);
-                    mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
-
-                    notificationManager.createNotificationChannel(mChannel);
-                    builder = new NotificationCompat.Builder(this, CHANNEL_ID);
+                    NotificationHelper notificationHelper = new NotificationHelper(getApplicationContext());
+                    notificationHelper.createNotification("Titulo", "GG mitre, no tiene internet");
 
                 }
-
-                builder.setContentTitle(getString(R.string.daily))
-                        .setContentText(getString(R.string.daily_text))
-                        .setSmallIcon(R.mipmap.ic_launcher);
-
-                notificationManager.notify(NOTIFICATION_ID, builder.build());*/
-
-                NotificationHelper notificationHelper = new NotificationHelper(getApplicationContext());
-                notificationHelper.createNotification("Titulo", "Un mensaje en Oreo :v");
-
                 Log.d(TAG, "Daily Reminder...!!");
 
             }
@@ -119,6 +122,31 @@ public class DailyJobService extends JobService {
         }
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+
+
+
+
+
+
 
     public static Integer calculateDays(String start, String end){
 
@@ -155,7 +183,6 @@ public class DailyJobService extends JobService {
         return contador;
 
     }
-
 
 
 }

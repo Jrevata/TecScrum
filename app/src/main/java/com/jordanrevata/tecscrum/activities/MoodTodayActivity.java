@@ -95,6 +95,13 @@ public class MoodTodayActivity extends AppCompatActivity {
 
             showMoodToday();
 
+            button_sendmoodtoday.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+
 
         }
 
@@ -185,6 +192,7 @@ public class MoodTodayActivity extends AppCompatActivity {
 
                         editText_difficultiestoday.setText(moodToday.getDifficulties());
                         editText_difficultiestoday.setFocusable(false);
+                        button_sendmoodtoday.setText(getString(R.string.confirm));
 
                     } else {
                         Log.e(TAG, "onError: " + response.errorBody().string());

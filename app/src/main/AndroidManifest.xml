@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jordanrevata.tecscrum">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -31,12 +32,12 @@
         </activity>
 
         <activity android:name=".activities.LoginActivity" android:theme="@style/AppTheme.NoActionBar2"/>
-        <activity android:name=".activities.ProjectMenuActivity"/>
+        <activity android:name=".activities.ProjectMenuActivity" android:theme="@style/AppTheme.NoActionBar2"/>
         <activity android:name=".activities.DailyActivity" android:theme="@style/AppTheme.NoActionBar2" />
         <activity android:name=".activities.MoodTodayActivity" android:theme="@style/AppTheme.NoActionBar2" />
-        <activity android:name=".activities.SprintMenuActivity"/>
-        <activity android:name=".activities.UserDetailActivity"/>
-        <activity android:name=".activities.UserEditActivity"/>
+        <activity android:name=".activities.SprintMenuActivity" android:theme="@style/AppTheme.NoActionBar2"/>
+        <activity android:name=".activities.UserDetailActivity" android:theme="@style/AppTheme.NoActionBar2"/>
+        <activity android:name=".activities.UserEditActivity" android:theme="@style/AppTheme.NoActionBar2"/>
 
         <service
             android:name=".services.DailyJobService"

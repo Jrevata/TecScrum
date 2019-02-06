@@ -34,7 +34,6 @@ public class ProjectMenuActivity extends AppCompatActivity {
         bundleGeneral.putInt("idprojects", idprojects);
 
 
-        Toast.makeText(this, String.valueOf(idprojects), Toast.LENGTH_LONG).show();
 
         fragmentManager = getSupportFragmentManager();
         fragmentSprint  = new SprintListFragment();

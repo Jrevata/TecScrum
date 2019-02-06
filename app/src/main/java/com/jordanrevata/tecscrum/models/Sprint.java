@@ -1,5 +1,8 @@
 package com.jordanrevata.tecscrum.models;
 
+import com.orm.dsl.Table;
+
+@Table
 public class Sprint {
 
     private Integer idsprints;
@@ -17,14 +20,7 @@ public class Sprint {
 
     }
 
-    public Sprint(Integer idsprints, String sprint_name, String sprint_goal, String start_date, String end_date, Integer projects_idprojects) {
-        this.idsprints = idsprints;
-        this.sprint_name = sprint_name;
-        this.sprint_goal = sprint_goal;
-        this.start_date = start_date;
-        this.end_date = end_date;
-        this.projects_idprojects = projects_idprojects;
-    }
+
 
 
     public Sprint(Integer idsprints, Integer projects_idprojects, String sprint_name, String sprint_goal, String start_date, String end_date, String created_at, String updated_at, Integer state) {
