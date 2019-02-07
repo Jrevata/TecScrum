@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,14 +73,20 @@ public class MoodTodayActivity extends AppCompatActivity {
         nameMood = getIntent().getExtras().getString("name");
 
 
+        if(nameMood!=null) {
+            textview_moodname.setText(nameMood);
+        }else{
+            textview_moodname.setText(R.string.mood_today);
+        }
         textview_mooddate.setText(dateMood);
-        textview_moodname.setText(nameMood);
 
         if(action.equals("Edit")){
 
+
+
             iduser = getIntent().getExtras().getInt("iduser");
             idsprint = getIntent().getExtras().getInt("idsprint");
-
+            textview_mooddate.setText(idsprint.toString());
             button_sendmoodtoday.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -220,8 +225,6 @@ public class MoodTodayActivity extends AppCompatActivity {
 
     }
 
-
-
     public void onRadioEmotionClicked(View view) {
 
         boolean checked = ((RadioButton) view).isChecked();
@@ -336,7 +339,6 @@ public class MoodTodayActivity extends AppCompatActivity {
         }
 
     }
-
 
     private void checkEmotions(Integer id){
 

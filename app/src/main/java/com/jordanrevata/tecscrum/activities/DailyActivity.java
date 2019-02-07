@@ -1,18 +1,15 @@
 package com.jordanrevata.tecscrum.activities;
 
-import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jordanrevata.tecscrum.R;
-import com.jordanrevata.tecscrum.fragments.DailyListFragment;
 import com.jordanrevata.tecscrum.models.Daily;
 import com.jordanrevata.tecscrum.models.ResponseMessage;
 import com.jordanrevata.tecscrum.services.ApiService;
@@ -29,8 +26,8 @@ public class DailyActivity extends AppCompatActivity {
     private Integer iddaily;
     private Integer idsprint;
     private Integer iduser;
-    String dailydate;
-
+    private String dailydate;
+    private String dailyname;
 
     private TextView textview_dailyname;
     private TextView textview_dailydate;
@@ -52,17 +49,23 @@ public class DailyActivity extends AppCompatActivity {
 
 
         String action = getIntent().getExtras().getString("action");
-        String dailyname = getIntent().getExtras().getString("name");
 
+        dailyname = getIntent().getExtras().getString("name");
         dailydate = getIntent().getExtras().getString("date");
 
-        textview_dailyname.setText(dailyname);
+        if(dailyname!=null){
+            textview_dailyname.setText(dailyname);
+        }else{
+            textview_dailyname.setText(R.string.daily);
+        }
         textview_dailydate.setText(dailydate);
 
         if(action.equals("Edit")){
 
             idsprint = getIntent().getExtras().getInt("idsprint");
             iduser   = getIntent().getExtras().getInt("iduser");
+
+            textview_dailydate.setText(idsprint.toString());
 
             button_senddaily.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -212,7 +215,5 @@ public class DailyActivity extends AppCompatActivity {
 
 
     }
-
-
 
 }

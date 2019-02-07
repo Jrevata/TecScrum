@@ -18,10 +18,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.jobdispatcher.Constraint;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.GooglePlayDriver;
 import com.firebase.jobdispatcher.Job;
 import com.firebase.jobdispatcher.Lifetime;
+import com.firebase.jobdispatcher.RetryStrategy;
 import com.firebase.jobdispatcher.Trigger;
 import com.jordanrevata.tecscrum.R;
 import com.jordanrevata.tecscrum.adapters.ProjectAdapter;
@@ -119,7 +121,9 @@ public class MainActivity extends AppCompatActivity {
 
                         case R.id.nav_about:
 
-                            Function.updateProjects();
+                            NotificationHelper notificationHelper = new NotificationHelper(getApplicationContext());
+
+                            notificationHelper.createNotification("Hola", "Como estás", new MoodTodayActivity(), 2);
 
 
 
@@ -130,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
 
                             break;
                         case R.id.nav_logout:
-                            Function.updateSprints();
+
                             Toast.makeText(MainActivity.this,String.valueOf(SprintRepository.getSprints().size()), Toast.LENGTH_SHORT).show();
 
                             //logOut();
@@ -149,14 +153,16 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
             dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(MainActivity.this));
 
             Job myJob = dispatcher.newJobBuilder()
                     .setService(DailyJobService.class)
                     .setTag(DailyJobService.class.getName())
-                    .setRecurring(false)
+                    .setRecurring(true)
                     .setLifetime(Lifetime.FOREVER)
-                    .setTrigger(Trigger.executionWindow(0, 60))
+                    .setTrigger(Trigger.executionWindow(0, 5))
+                    .setRetryStrategy(RetryStrategy.DEFAULT_LINEAR)
                     .setReplaceCurrent(true)
                     .build();
 
@@ -216,7 +222,9 @@ public class MainActivity extends AppCompatActivity {
                         projectAdapter.setProjects(projectList);
                         projectAdapter.notifyDataSetChanged();
 
-
+                        if(ProjectRepository.verifyProjects()){
+                            ProjectRepository.saveProjects(projectList);
+                        }
 
                         Log.e(TAG, projectList.toString());
 
