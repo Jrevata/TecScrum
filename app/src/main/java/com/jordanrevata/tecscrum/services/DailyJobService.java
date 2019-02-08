@@ -1,10 +1,14 @@
 package com.jordanrevata.tecscrum.services;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 
 import com.firebase.jobdispatcher.JobParameters;
@@ -22,23 +26,28 @@ import java.util.Locale;
 
 public class DailyJobService extends JobService {
 
-    private static final String TAG = DailyJobService.class.getSimpleName();
+    public static final String TAG = DailyJobService.class.getSimpleName();
 
 
+    BackgroundTask backgroundTask;
 
+    @SuppressLint("StaticFieldLeak")
     @Override
-    public boolean onStartJob(JobParameters job) {
+    public boolean onStartJob(final JobParameters job) {
 
 
-        new Thread(new Runnable() {
+        backgroundTask = new BackgroundTask(){
+
             @Override
-            public void run() {
-                notificate();
+            protected void onPostExecute(String s) {
+                Toast.makeText(getApplicationContext(), "Message: " + s, Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "In Background...!!");
+                RingtoneManager.getRingtone(getApplicationContext(), RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)).play();
+                jobFinished(job, false);
             }
-        }).start();
+        };
 
-
-
+        backgroundTask.execute();
 
         return true;
     }
@@ -86,6 +95,7 @@ public class DailyJobService extends JobService {
             }
 
             Log.d(TAG, "No pasó nada, sorry man " + now.getTime().toString());
+            Toast.makeText(getApplicationContext(), "Execution background", Toast.LENGTH_LONG).show();
 
         }catch (Exception e){
             Log.e(TAG, e.toString());
@@ -107,6 +117,15 @@ public class DailyJobService extends JobService {
         Function.updateProjects();
         Function.updateSprints();
 
+    }
+
+    public static class BackgroundTask extends AsyncTask<Void,Void, String>{
+
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            return "Jelouda";
+        }
     }
 
 

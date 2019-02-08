@@ -42,7 +42,7 @@
 
         <service
             android:name=".services.DailyJobService"
-            android:exported="false">
+            >
             <intent-filter>
                 <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
             </intent-filter>

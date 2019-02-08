@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerview_projects;
     public List<Project> projectList;
 
-    FirebaseJobDispatcher dispatcher;
+    private FirebaseJobDispatcher dispatcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
 
                             Toast.makeText(MainActivity.this,String.valueOf(SprintRepository.getSprints().size()), Toast.LENGTH_SHORT).show();
 
-                            //logOut();
+                            logOut();
                             break;
                     }
 
@@ -154,24 +154,33 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-            dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(MainActivity.this));
+            dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
 
-            Job myJob = dispatcher.newJobBuilder()
-                    .setService(DailyJobService.class)
-                    .setTag(DailyJobService.class.getName())
-                    .setRecurring(true)
-                    .setLifetime(Lifetime.FOREVER)
-                    .setTrigger(Trigger.executionWindow(0, 5))
-                    .setRetryStrategy(RetryStrategy.DEFAULT_LINEAR)
-                    .setReplaceCurrent(true)
-                    .build();
+            startJob();
 
-            dispatcher.mustSchedule(myJob);
 
-            onNewIntent(this.getIntent());
 
         }
 
+
+    }
+
+    private void startJob(){
+
+        Job myJob = dispatcher.newJobBuilder()
+                .setService(DailyJobService.class)
+                .setTag(DailyJobService.TAG)
+                .setRecurring(true)
+                .setLifetime(Lifetime.FOREVER)
+                .setTrigger(Trigger.executionWindow(5, 7))
+                .setRetryStrategy(RetryStrategy.DEFAULT_LINEAR)
+                .setReplaceCurrent(false)
+                .build();
+
+        dispatcher.mustSchedule(myJob);
+
+
+        Toast.makeText(MainActivity.this, "Start Job", Toast.LENGTH_SHORT).show();
 
     }
 
