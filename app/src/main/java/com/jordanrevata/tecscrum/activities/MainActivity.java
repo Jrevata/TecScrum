@@ -135,6 +135,8 @@ public class MainActivity extends AppCompatActivity {
                             break;
                         case R.id.nav_logout:
 
+                            if(SprintRepository.verifySprints())
+                                Function.updateSprints();
                             Toast.makeText(MainActivity.this,String.valueOf(SprintRepository.getSprints().size()), Toast.LENGTH_SHORT).show();
 
                             logOut();
@@ -172,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
                 .setTag(DailyJobService.TAG)
                 .setRecurring(true)
                 .setLifetime(Lifetime.FOREVER)
-                .setTrigger(Trigger.executionWindow(5, 7))
+                .setTrigger(Trigger.executionWindow(60, 900))
                 .setRetryStrategy(RetryStrategy.DEFAULT_LINEAR)
                 .setReplaceCurrent(false)
                 .build();
@@ -180,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
         dispatcher.mustSchedule(myJob);
 
 
-        Toast.makeText(MainActivity.this, "Start Job", Toast.LENGTH_SHORT).show();
+
 
     }
 
@@ -295,6 +297,7 @@ public class MainActivity extends AppCompatActivity {
                                         UserRepository.logout();
                                         SavedRepository.deleteSave();
                                         ProjectRepository.deleteProjects();
+                                        SprintRepository.deleteSprints();
                                         dispatcher.cancelAll();
                                         finish();
                                         startActivity(intentLogin);

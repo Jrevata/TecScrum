@@ -184,19 +184,15 @@ public class Function {
 
     public static Daily findDailybyDate(List<Daily> dailies,Calendar calendar){
 
-
-
         for(Daily daily1: dailies){
 
             Calendar calendar1 = convertToCalendar(daily1.getDate_daily());
             if(calendar1.equals(calendar)){
                 return daily1;
             }
-
         }
 
         return null;
-
     }
 
     public static MoodToday findMoodTodaybyDate(List<MoodToday> moodTodays, Calendar calendar){

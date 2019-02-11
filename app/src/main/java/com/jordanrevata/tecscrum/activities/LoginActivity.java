@@ -1,6 +1,8 @@
 package com.jordanrevata.tecscrum.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -80,6 +82,8 @@ public class LoginActivity extends AppCompatActivity {
 
                                 UserRepository.create(user);
 
+                                createPersistentData();
+
                                 Intent intentMain = new Intent(LoginActivity.this, MainActivity.class);
                                 startActivity(intentMain);
                                 finish();
@@ -111,6 +115,29 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
+
+    }
+
+    private void createPersistentData(){
+
+        SharedPreferences.Editor prefContDaily = getSharedPreferences("CONT_DAILY", MODE_PRIVATE).edit();
+        prefContDaily.putInt("contador_daily", 0);
+        prefContDaily.apply();
+
+        SharedPreferences.Editor prefContMood = getSharedPreferences("CONT_MOOD", MODE_PRIVATE).edit();
+        prefContMood.putInt("contador_mood", 0);
+        prefContMood.apply();
+
+        SharedPreferences.Editor prefContProject = getSharedPreferences("CONT_UPDATE_PROJECT", MODE_PRIVATE).edit();
+        prefContProject.putInt("contador_project", 0);
+        prefContProject.apply();
+
+        SharedPreferences.Editor prefContSprint = getSharedPreferences("CONT_UPDATE_SPRINT", MODE_PRIVATE).edit();
+        prefContSprint.putInt("contador_sprint", 0);
+        prefContSprint.apply();
+
+
+
 
     }
 }

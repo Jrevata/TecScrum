@@ -25,8 +25,8 @@ public class NotificationHelper {
     private Context mContext;
     private NotificationManager mNotificationManager;
     private NotificationCompat.Builder mBuilder;
-    public static final String NOTIFICATION_CHANNEL_ID = "10001";
-    public static final Integer NOTIFICATION_ID = 123456;
+    public static final String  NOTIFICATION_CHANNEL_ID = "10001";
+    public static final Integer NOTIFICATION_ID         = 123456;
 
     public NotificationHelper(Context context) {
         mContext = context;
