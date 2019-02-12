@@ -1,5 +1,8 @@
 package com.jordanrevata.tecscrum.activities;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,10 +38,30 @@ public class DailyActivity extends AppCompatActivity {
     private EditText editText_dowilltoday;
     private Button button_senddaily;
 
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(!isNetworkAvailable()){
+
+            Toast.makeText(DailyActivity.this,getString(R.string.connect_network), Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_daily);
+
+        if(!isNetworkAvailable()){
+
+            Toast.makeText(DailyActivity.this,getString(R.string.connect_network), Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
 
         textview_dailyname      = findViewById(R.id.textview_dailyname);
         textview_dailydate      = findViewById(R.id.textview_dailydate);
@@ -65,7 +88,7 @@ public class DailyActivity extends AppCompatActivity {
             idsprint = getIntent().getExtras().getInt("idsprint");
             iduser   = getIntent().getExtras().getInt("iduser");
 
-            textview_dailydate.setText(idsprint.toString());
+            textview_dailydate.setText(dailydate);
 
             button_senddaily.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -216,4 +239,10 @@ public class DailyActivity extends AppCompatActivity {
 
     }
 
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 }

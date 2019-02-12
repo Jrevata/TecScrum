@@ -1,6 +1,9 @@
 package com.jordanrevata.tecscrum.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -24,9 +27,29 @@ public class ProjectMenuActivity extends AppCompatActivity {
 
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+        if(!isNetworkAvailable()){
+
+            Toast.makeText(ProjectMenuActivity.this,getString(R.string.connect_network), Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project_menu);
+
+        if(!isNetworkAvailable()){
+
+            Toast.makeText(ProjectMenuActivity.this,getString(R.string.connect_network), Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
 
         idprojects = getIntent().getExtras().getInt("idprojects");
 
@@ -75,6 +98,13 @@ public class ProjectMenuActivity extends AppCompatActivity {
         }
 
         return super.onKeyDown(keyCode, event);
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
 }

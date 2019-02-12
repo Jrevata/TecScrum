@@ -17,6 +17,7 @@ import com.firebase.jobdispatcher.JobService;
 
 import com.jordanrevata.tecscrum.activities.DailyActivity;
 import com.jordanrevata.tecscrum.activities.MoodTodayActivity;
+import com.jordanrevata.tecscrum.repositories.SprintRepository;
 import com.jordanrevata.tecscrum.utilities.Constant;
 import com.jordanrevata.tecscrum.utilities.Function;
 
@@ -43,6 +44,11 @@ public class DailyJobService extends JobService {
 
             @Override
             protected void onPostExecute(String s) {
+                if(SprintRepository.verifySprints()){
+                    Function.updateSprints();
+                    Log.d(TAG, "Sprints update from initial service");
+                }
+
                 notificateGeneral();
                 updateData();
                 jobFinished(job, false);
@@ -79,10 +85,12 @@ public class DailyJobService extends JobService {
                     NotificationHelper notificationHelper = new NotificationHelper(getApplicationContext());
                     notificationHelper.createNotification("TECSCRUM - DAILY", "No olvide conectarse a la red para completar el daily", null, null);
                 }
+
+                getSharedPreferences("CONT_DAILY", MODE_PRIVATE).edit().putInt("contador_daily",1).apply();
             }
         }
 
-        getSharedPreferences("CONT_DAILY", MODE_PRIVATE).edit().putInt("contador_daily",1).apply();
+
         Integer newContador = getSharedPreferences("CONT_DAILY", MODE_PRIVATE).getInt("contador_daily", 0);
         Log.d(TAG, "new persistent data : " + newContador.toString());
 
@@ -94,6 +102,8 @@ public class DailyJobService extends JobService {
         Integer idSprint = Function.getIdSprintByDateNow();
         Integer contadorMood = getSharedPreferences("CONT_MOOD", MODE_PRIVATE).getInt("contador_mood", 0);
 
+        Log.d(TAG, "idSprint: " + idSprint);
+        Log.d(TAG, "contador:  " + contadorMood);
         if(contadorMood == 0) {
             if (idSprint != 0) {
 
@@ -109,10 +119,12 @@ public class DailyJobService extends JobService {
 
                 }
 
+                getSharedPreferences("CONT_MOOD", MODE_PRIVATE).edit().putInt("contador_mood", 1).apply();
+
             }
         }
 
-        getSharedPreferences("CONT_MOOD", MODE_PRIVATE).edit().putInt("contador_mood", 1).apply();
+
 
     }
 
@@ -135,6 +147,7 @@ public class DailyJobService extends JobService {
             Calendar timeStartMood = (Calendar) nowMood.clone();
             timeStartMood.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).parse(dateNowMood + " " + Constant.TIME_START_MOOD_TODAY));
             Calendar timeEndMood = (Calendar) timeStartMood.clone();
+            timeEndMood.add(Calendar.MINUTE, 60);
 
             if(timeStartDaily.before(nowDaily) && nowDaily.before(timeEndDaily)){
 
@@ -147,6 +160,7 @@ public class DailyJobService extends JobService {
 
             if (timeStartMood.before(nowMood) && nowMood.before(timeEndMood)) {
 
+                Log.d(TAG, "In Mood Today Notificate");
                 notificateMood();
 
                 getSharedPreferences("CONT_DAILY", MODE_PRIVATE).edit().putInt("contador_daily", 0).apply();
@@ -189,17 +203,20 @@ public class DailyJobService extends JobService {
 
             if(timeStartUpdateProject.before(now) && now.before(timeEndUpdateProject)){
 
-                updateProjects();
+                if(isNetworkAvailable()) {
+                    updateProjects();
 
-                getSharedPreferences("CONT_UPDATE_SPRINT", MODE_PRIVATE).edit().putInt("contador_sprint", 0).apply();
-
+                    getSharedPreferences("CONT_UPDATE_SPRINT", MODE_PRIVATE).edit().putInt("contador_sprint", 0).apply();
+                }
             }
 
             if(timeStartUpdateSprint.before(now) && now.before(timeEndUpdateSprint)){
 
-                updateSprints();
+                if(isNetworkAvailable()) {
+                    updateSprints();
 
-                getSharedPreferences("CONT_UPDATE_PROJECT", MODE_PRIVATE).edit().putInt("contador_project", 0).apply();
+                    getSharedPreferences("CONT_UPDATE_PROJECT", MODE_PRIVATE).edit().putInt("contador_project", 0).apply();
+                }
             }
 
 
@@ -221,6 +238,10 @@ public class DailyJobService extends JobService {
 
                 Function.updateProjects();
                 Log.d(TAG, "Update Projects");
+            }else{
+
+                Log.d(TAG, "Not Update Projects");
+
             }
 
             getSharedPreferences("CONT_UPDATE_PROJECT", MODE_PRIVATE).edit().putInt("contador_project", 1).apply();
@@ -238,6 +259,10 @@ public class DailyJobService extends JobService {
 
                 Function.updateSprints();
                 Log.d(TAG, "Update Sprints");
+
+            }else{
+
+                Log.d(TAG, "Not Update Sprints");
 
             }
 

@@ -1,7 +1,10 @@
 package com.jordanrevata.tecscrum.activities;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -61,10 +64,30 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseJobDispatcher dispatcher;
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+        if(!isNetworkAvailable()){
+
+            Toast.makeText(MainActivity.this,getString(R.string.connect_network), Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         projectList = new ArrayList<>();
+
+        if(!isNetworkAvailable()){
+
+            Toast.makeText(MainActivity.this,getString(R.string.connect_network), Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
 
         boolean verifyExistUser = UserRepository.verifyLogeo();
 
@@ -135,10 +158,6 @@ public class MainActivity extends AppCompatActivity {
                             break;
                         case R.id.nav_logout:
 
-                            if(SprintRepository.verifySprints())
-                                Function.updateSprints();
-                            Toast.makeText(MainActivity.this,String.valueOf(SprintRepository.getSprints().size()), Toast.LENGTH_SHORT).show();
-
                             logOut();
                             break;
                     }
@@ -174,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
                 .setTag(DailyJobService.TAG)
                 .setRecurring(true)
                 .setLifetime(Lifetime.FOREVER)
-                .setTrigger(Trigger.executionWindow(60, 900))
+                .setTrigger(Trigger.executionWindow(30, 60))
                 .setRetryStrategy(RetryStrategy.DEFAULT_LINEAR)
                 .setReplaceCurrent(false)
                 .build();
@@ -340,7 +359,12 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 
 
 }

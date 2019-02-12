@@ -1,7 +1,10 @@
 package com.jordanrevata.tecscrum.activities;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -77,9 +80,28 @@ public class UserEditActivity extends AppCompatActivity {
     };
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+        if(!isNetworkAvailable()){
+
+            Toast.makeText(UserEditActivity.this,getString(R.string.connect_network), Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_edit);
+
+        if(!isNetworkAvailable()){
+
+            Toast.makeText(UserEditActivity.this,getString(R.string.connect_network), Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
 
         mediaFile = null;
         User user = UserRepository.getUser();
@@ -340,6 +362,13 @@ public class UserEditActivity extends AppCompatActivity {
             resizedWidth = maxDimension;
         }
         return Bitmap.createScaledBitmap(bitmap, resizedWidth, resizedHeight, false);
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
 }

@@ -1,5 +1,8 @@
 package com.jordanrevata.tecscrum.activities;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -30,10 +33,18 @@ public class SprintMenuActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
     RelativeLayout relativeLayoutSprintMenu;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sprint_menu);
+
+        if(!isNetworkAvailable()){
+
+            Toast.makeText(SprintMenuActivity.this,getString(R.string.connect_network), Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
 
         idsprint = getIntent().getExtras().getInt("idsprint");
         start_sprint = getIntent().getExtras().getString("start_sprint");
@@ -88,6 +99,19 @@ public class SprintMenuActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if(!isNetworkAvailable()){
+
+            Toast.makeText(SprintMenuActivity.this,getString(R.string.connect_network), Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
+
+    }
+
     private void updateNavigationBarState(int actionId){
         Menu menu = bottomNavigationView.getMenu();
 
@@ -104,5 +128,12 @@ public class SprintMenuActivity extends AppCompatActivity {
         }
 
         return super.onKeyDown(keyCode, event);
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

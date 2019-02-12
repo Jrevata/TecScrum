@@ -38,6 +38,7 @@
     <!-- Notifications -->
     <string name="daily_text">Toque para completar el formulario diario</string>
     <string name="confirm">Confirmar</string>
+    <string name="connect_network">Por favor, conéctese a la red</string>
 
 
 </resources>

@@ -1,5 +1,8 @@
 package com.jordanrevata.tecscrum.utilities;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.jordanrevata.tecscrum.models.Daily;
@@ -23,6 +26,8 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static android.support.v4.content.ContextCompat.getSystemService;
 
 public class Function {
 
@@ -439,5 +444,10 @@ public class Function {
 
         return idsprint;
     }
+
+
+
+
+
 
 }

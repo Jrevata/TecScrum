@@ -1,5 +1,8 @@
 package com.jordanrevata.tecscrum.activities;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -52,11 +55,29 @@ public class MoodTodayActivity extends AppCompatActivity {
     private RadioButton radio_dedicated_100;
 
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if(!isNetworkAvailable()){
+
+            Toast.makeText(MoodTodayActivity.this,getString(R.string.connect_network), Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mood_today);
+
+        if(!isNetworkAvailable()){
+
+            Toast.makeText(MoodTodayActivity.this,getString(R.string.connect_network), Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
 
         idemotion = 0;
         iddedicated = 0;
@@ -86,7 +107,7 @@ public class MoodTodayActivity extends AppCompatActivity {
 
             iduser = getIntent().getExtras().getInt("iduser");
             idsprint = getIntent().getExtras().getInt("idsprint");
-            textview_mooddate.setText(idsprint.toString());
+            textview_mooddate.setText(dateMood);
             button_sendmoodtoday.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -423,5 +444,11 @@ public class MoodTodayActivity extends AppCompatActivity {
 
     }
 
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 
 }
