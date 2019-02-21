@@ -39,6 +39,9 @@
     <string name="daily_text">Toque para completar el formulario diario</string>
     <string name="confirm">Confirmar</string>
     <string name="connect_network">Por favor, conéctese a la red</string>
+    <string name="enough_projects">No hay Proyectos disponibles</string>
+    <string name="enough_sprints">No hay Sprints disponibles</string>
+    <string name="invalid_credentials">Credenciales incorrectas</string>
 
 
 </resources>

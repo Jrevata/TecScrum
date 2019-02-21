@@ -34,7 +34,13 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-
+        <TextView
+            android:id="@+id/textview_verify_list_projects"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:text="@string/enough_projects"/>
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerview_projects"
             android:layout_width="match_parent"

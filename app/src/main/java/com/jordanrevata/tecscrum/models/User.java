@@ -17,6 +17,7 @@ public class User {
     private String created_at;
     private String updated_at;
     private String token;
+    private Integer state;
 
 
     public User(){
@@ -34,18 +35,20 @@ public class User {
         this.fullname = givenName + " " + familyName;
     }
 
-    public User(Integer idusers, String email, String password, String image, String familyName, String givenName, String phone, String role, String created_at, String updated_at) {
+    public User(Integer idusers, String email, String password, String image, String fullname, String familyName, String givenName, String phone, String role, String created_at, String updated_at, String token, Integer state) {
         this.idusers = idusers;
         this.email = email;
         this.password = password;
         this.image = image;
-        this.fullname = givenName + " " + familyName;
+        this.fullname = fullname;
         this.familyName = familyName;
         this.givenName = givenName;
         this.phone = phone;
         this.role = role;
         this.created_at = created_at;
         this.updated_at = updated_at;
+        this.token = token;
+        this.state = state;
     }
 
     public Integer getIdusers() {
@@ -144,6 +147,14 @@ public class User {
         this.token = token;
     }
 
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -159,6 +170,7 @@ public class User {
                 ", created_at='" + created_at + '\'' +
                 ", updated_at='" + updated_at + '\'' +
                 ", token='" + token + '\'' +
+                ", state=" + state +
                 '}';
     }
 }

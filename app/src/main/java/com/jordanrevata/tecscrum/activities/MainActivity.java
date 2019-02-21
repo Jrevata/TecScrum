@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -17,6 +18,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,6 +62,10 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private RecyclerView recyclerview_projects;
     public List<Project> projectList;
+    private TextView textview_verify_list_projects;
+    TextView emailText;
+    TextView fullnameText;
+    CircleImageView photoImage;
 
     private FirebaseJobDispatcher dispatcher;
 
@@ -74,13 +80,28 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        User user = UserRepository.getUser();
+        if(user.getImage()!=null) {
+            String url = ApiService.API_BASE_URL + "/images/" + user.getImage();
+            Picasso.with(this).load(url).into(photoImage);
+        }
+        fullnameText.setText(user.getFullname());
+        emailText.setText(user.getEmail());
+
     }
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         projectList = new ArrayList<>();
+
+        textview_verify_list_projects = findViewById(R.id.textview_verify_list_projects);
+        textview_verify_list_projects.setVisibility(View.INVISIBLE);
 
         if(!isNetworkAvailable()){
 
@@ -112,17 +133,17 @@ public class MainActivity extends AppCompatActivity {
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
             // Change navigation header information
-            CircleImageView photoImage = navigationView.getHeaderView(0).findViewById(R.id.menu_photo);
+            photoImage = navigationView.getHeaderView(0).findViewById(R.id.menu_photo);
             User user = UserRepository.getUser();
             if(user.getImage()!=null) {
                 String url = ApiService.API_BASE_URL + "/images/" + user.getImage();
                 Picasso.with(this).load(url).into(photoImage);
             }
 
-            TextView fullnameText = (TextView) navigationView.getHeaderView(0).findViewById(R.id.menu_fullname);
+            fullnameText = (TextView) navigationView.getHeaderView(0).findViewById(R.id.menu_fullname);
             fullnameText.setText(user.getFullname());
 
-            TextView emailText = (TextView) navigationView.getHeaderView(0).findViewById(R.id.menu_email);
+            emailText = (TextView) navigationView.getHeaderView(0).findViewById(R.id.menu_email);
             emailText.setText(user.getEmail());
 
 
@@ -132,7 +153,9 @@ public class MainActivity extends AppCompatActivity {
                     // Do action by menu item id
                     switch (menuItem.getItemId()) {
                         case R.id.nav_projects:
-                            Toast.makeText(MainActivity.this, "Go Projects...", Toast.LENGTH_SHORT).show();
+                            Intent intentProject = new Intent(MainActivity.this, MainActivity.class);
+                            startActivity(intentProject);
+                            finish();
                             break;
                         case R.id.nav_profile:
                             Toast.makeText(MainActivity.this, "Go Profile...", Toast.LENGTH_SHORT).show();
@@ -147,12 +170,6 @@ public class MainActivity extends AppCompatActivity {
                             NotificationHelper notificationHelper = new NotificationHelper(getApplicationContext());
 
                             notificationHelper.createNotification("Hola", "Como estás", new MoodTodayActivity(), 2);
-
-
-
-
-
-
 
 
                             break;
@@ -247,6 +264,9 @@ public class MainActivity extends AppCompatActivity {
 
                         projectList = response.body();
 
+                        if(projectList.isEmpty()){
+                            textview_verify_list_projects.setVisibility(View.VISIBLE);
+                        }
 
                         ProjectAdapter projectAdapter = (ProjectAdapter) recyclerview_projects.getAdapter();
                         projectAdapter.setProjects(projectList);

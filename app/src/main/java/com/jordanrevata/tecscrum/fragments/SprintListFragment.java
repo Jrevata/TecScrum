@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jordanrevata.tecscrum.R;
@@ -34,6 +35,7 @@ import retrofit2.Response;
 public class SprintListFragment extends Fragment {
 
     RecyclerView recyclerView_sprints;
+    TextView textview_verify_list_sprints;
     Integer idproject;
 
     private static final String TAG = SprintListFragment.class.getSimpleName();
@@ -85,6 +87,9 @@ public class SprintListFragment extends Fragment {
 
         idproject = getArguments().getInt("idprojects");
 
+
+        textview_verify_list_sprints = view.findViewById(R.id.textview_verify_list_sprints);
+        textview_verify_list_sprints.setVisibility(View.INVISIBLE);
         recyclerView_sprints = view.findViewById(R.id.recyclerview_sprints);
         recyclerView_sprints.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView_sprints.setAdapter(new SprintAdapter(this));
@@ -116,6 +121,9 @@ public class SprintListFragment extends Fragment {
 
 
                         List<Sprint> sprintList = response.body();
+                        if(sprintList.isEmpty()){
+                            textview_verify_list_sprints.setVisibility(View.VISIBLE);
+                        }
 
                         SprintAdapter sprintAdapter = (SprintAdapter) recyclerView_sprints.getAdapter();
                         sprintAdapter.setProjects(sprintList);

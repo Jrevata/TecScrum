@@ -48,7 +48,7 @@ public interface ApiService {
     Call<List<Forum>> getCommentsBySprint(@Path("id") int id);
 
     @POST("api/comments/store")
-    Call<ResponseMessage> createComment(@Body Forum forum);
+    Call<Forum> createComment(@Body Forum forum);
 
     @FormUrlEncoded
     @POST("api/users/update/{id}")

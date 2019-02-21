@@ -30,6 +30,17 @@ public class UserDetailActivity extends AppCompatActivity {
     private TextView textview_profile_phone;
     private CircleImageView imageview_photo_profile;
 
+    private static final int REGISTER_FORM_REQUEST = 100;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == REGISTER_FORM_REQUEST) {
+            //Refresh del intent
+            setProfile(UserRepository.getUser());
+        }
+    }
+
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -68,7 +79,7 @@ public class UserDetailActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Intent intentEdit = new Intent(UserDetailActivity.this, UserEditActivity.class);
-                    startActivity(intentEdit);
+                    startActivityForResult(intentEdit, REGISTER_FORM_REQUEST);
                 }
             });
         }else{

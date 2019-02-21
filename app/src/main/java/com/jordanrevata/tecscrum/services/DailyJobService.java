@@ -33,6 +33,7 @@ public class DailyJobService extends JobService {
     public static final String TAG = DailyJobService.class.getSimpleName();
 
 
+
     BackgroundTask backgroundTask;
 
     @SuppressLint("StaticFieldLeak")
@@ -48,8 +49,11 @@ public class DailyJobService extends JobService {
                     Function.updateSprints();
                     Log.d(TAG, "Sprints update from initial service");
                 }
+                Calendar now = Calendar.getInstance();
+                if(now.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY && now.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
+                    notificateGeneral();
+                }
 
-                notificateGeneral();
                 updateData();
                 jobFinished(job, false);
             }

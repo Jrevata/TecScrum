@@ -156,11 +156,11 @@ public class ForumFragment extends Fragment {
         forum.setMessage(message);
         forum.setUsers_idusers(UserRepository.getUser().getIdusers());
 
-        Call<ResponseMessage> responseMessageCall = api.createComment(forum);
+        Call<Forum> responseMessageCall = api.createComment(forum);
 
-        responseMessageCall.enqueue(new Callback<ResponseMessage>() {
+        responseMessageCall.enqueue(new Callback<Forum>() {
             @Override
-            public void onResponse(Call<ResponseMessage> call, Response<ResponseMessage> response) {
+            public void onResponse(Call<Forum> call, Response<Forum> response) {
 
                 try {
 
@@ -169,9 +169,7 @@ public class ForumFragment extends Fragment {
 
                     if (response.isSuccessful()) {
 
-                        ResponseMessage responseMessage = response.body();
-
-                        Toast.makeText(ForumFragment.this.getContext(), responseMessage.getMessage(), Toast.LENGTH_LONG).show();
+                        Forum responseMessage = response.body();
 
                         Log.d(TAG, responseMessage.toString());
 
@@ -195,7 +193,7 @@ public class ForumFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<ResponseMessage> call, Throwable t) {
+            public void onFailure(Call<Forum> call, Throwable t) {
 
                 Log.e(TAG, "onFailure: " + t.toString());
                 Toast.makeText(ForumFragment.this.getContext(), t.getMessage(), Toast.LENGTH_LONG).show();

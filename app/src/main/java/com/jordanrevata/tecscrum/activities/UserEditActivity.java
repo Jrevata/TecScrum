@@ -79,6 +79,8 @@ public class UserEditActivity extends AppCompatActivity {
             Manifest.permission.CAMERA,
     };
 
+
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -170,7 +172,7 @@ public class UserEditActivity extends AppCompatActivity {
 
             Bitmap bitmap = BitmapFactory.decodeFile(file.getPath());
 
-            bitmap = scaleBitmapDown(bitmap, 300);
+            bitmap = scaleBitmapDown(bitmap, 290);
 
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
@@ -317,12 +319,12 @@ public class UserEditActivity extends AppCompatActivity {
                     case REQUEST_CODE_CAMERA:
                         Picasso.with(UserEditActivity.this).load(imageFile.get(0)).into(profile_image);
                         mediaFile = imageFile.get(0);
-                        Toast.makeText(UserEditActivity.this,mediaFile.getPath(),Toast.LENGTH_LONG).show();
+
                         break;
                     case REQUEST_CODE_GALLERY:
                         Picasso.with(UserEditActivity.this).load(imageFile.get(0)).into(profile_image);
                         mediaFile = imageFile.get(0);
-                        Toast.makeText(UserEditActivity.this,mediaFile.getPath(),Toast.LENGTH_LONG).show();
+
                         break;
                 }
 

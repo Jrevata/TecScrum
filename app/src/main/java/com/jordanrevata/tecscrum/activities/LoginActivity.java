@@ -68,6 +68,10 @@ public class LoginActivity extends AppCompatActivity {
 
                             int statusCode = response.code();
                             Log.d(TAG, "HTTP status code: " + statusCode );
+                            if(statusCode==401){
+                                Toast.makeText(LoginActivity.this, getString(R.string.invalid_credentials), Toast.LENGTH_LONG).show();
+                                return;
+                            }
 
                             if (response.isSuccessful()) {
 
