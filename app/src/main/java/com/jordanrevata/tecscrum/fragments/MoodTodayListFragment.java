@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jordanrevata.tecscrum.R;
@@ -20,6 +21,8 @@ import com.jordanrevata.tecscrum.repositories.UserRepository;
 import com.jordanrevata.tecscrum.services.ApiService;
 import com.jordanrevata.tecscrum.services.ApiServiceGenerator;
 import com.jordanrevata.tecscrum.utilities.Function;
+
+import org.w3c.dom.Text;
 
 import java.util.Collections;
 import java.util.List;
@@ -37,7 +40,7 @@ public class MoodTodayListFragment extends Fragment {
     Integer idsprint;
     String start_sprint;
     String end_sprint;
-
+    TextView textview_verify_list_mood;
 
     public MoodTodayListFragment() {
 
@@ -63,7 +66,8 @@ public class MoodTodayListFragment extends Fragment {
         Log.d(TAG, "on create Fragment Dailies" + idsprint.toString() + start_sprint + end_sprint);
 
         View view = inflater.inflate(R.layout.fragment_mood_today_list, container, false);
-
+        textview_verify_list_mood = view.findViewById(R.id.textview_verify_list_mood);
+        textview_verify_list_mood.setVisibility(View.INVISIBLE);
         recyclerview_mood = view.findViewById(R.id.recyclerview_mood_list);
         recyclerview_mood.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerview_mood.setAdapter(new MoodAdapter(this));
@@ -103,6 +107,9 @@ public class MoodTodayListFragment extends Fragment {
                         moodAdapter.setMoodTodays(moodTodayGenerate);
                         moodAdapter.notifyDataSetChanged();
 
+                        if(moodTodayGenerate.isEmpty()){
+                            textview_verify_list_mood.setVisibility(View.VISIBLE);
+                        }
 
                     } else {
                         Log.e(TAG, "onError: " + response.errorBody().string());

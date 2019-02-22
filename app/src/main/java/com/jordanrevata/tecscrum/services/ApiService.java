@@ -86,4 +86,10 @@ public interface ApiService {
     @POST("api/moodtoday/store")
     Call<ResponseMessage> createMoodToday(@Body MoodToday moodToday);
 
+    @FormUrlEncoded
+    @POST("api/users/changePassword/{idUser}")
+    Call<ResponseMessage> updatePassword(@Path("idUser") int id,
+                                         @Field("oldPassword") String oldPassword,
+                                         @Field("newPassword") String newPassword);
+
 }

@@ -7,7 +7,6 @@ public class User {
 
     private Integer idusers;
     private String email;
-    private String password;
     private String image;
     private String fullname;
     private String familyName;
@@ -35,10 +34,9 @@ public class User {
         this.fullname = givenName + " " + familyName;
     }
 
-    public User(Integer idusers, String email, String password, String image, String fullname, String familyName, String givenName, String phone, String role, String created_at, String updated_at, String token, Integer state) {
+    public User(Integer idusers, String email, String image, String fullname, String familyName, String givenName, String phone, String role, String created_at, String updated_at, String token, Integer state) {
         this.idusers = idusers;
         this.email = email;
-        this.password = password;
         this.image = image;
         this.fullname = fullname;
         this.familyName = familyName;
@@ -115,14 +113,6 @@ public class User {
         this.role = role;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getCreated_at() {
         return created_at;
     }
@@ -160,7 +150,6 @@ public class User {
         return "User{" +
                 "idusers=" + idusers +
                 ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
                 ", image='" + image + '\'' +
                 ", fullname='" + fullname + '\'' +
                 ", familyName='" + familyName + '\'' +

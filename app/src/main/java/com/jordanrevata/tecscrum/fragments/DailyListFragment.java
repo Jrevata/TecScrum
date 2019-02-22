@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jordanrevata.tecscrum.R;
@@ -44,6 +45,7 @@ public class DailyListFragment extends Fragment {
     private String start_sprint;
     private String end_sprint;
     DailyAdapter dailyAdapter;
+    TextView textview_verify_list_daily;
 
 
     @Override
@@ -63,6 +65,7 @@ public class DailyListFragment extends Fragment {
 
 
 
+
         idsprint = getArguments().getInt("idsprint");
         start_sprint = getArguments().getString("start_sprint");
         end_sprint   = getArguments().getString("end_sprint");
@@ -70,6 +73,9 @@ public class DailyListFragment extends Fragment {
         Log.d(TAG, "on create Fragment Dailies" + idsprint.toString() + start_sprint + end_sprint);
 
         View view = inflater.inflate(R.layout.fragment_daily_list, container, false);
+
+        textview_verify_list_daily = view.findViewById(R.id.textview_verify_list_daily);
+        textview_verify_list_daily.setVisibility(View.INVISIBLE);
 
         recyclerview_dailies = view.findViewById(R.id.recyclerview_daily_list);
         recyclerview_dailies.setAdapter(null);
@@ -115,6 +121,10 @@ public class DailyListFragment extends Fragment {
                         dailyAdapter = (DailyAdapter) recyclerview_dailies.getAdapter();
                         dailyAdapter.setDailies(dailiesGenerate);
                         dailyAdapter.notifyDataSetChanged();
+
+                        if(dailiesGenerate.isEmpty()){
+                            textview_verify_list_daily.setVisibility(View.VISIBLE);
+                        }
 
 
                     } else {

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jordanrevata.tecscrum.R;
@@ -22,6 +23,8 @@ import com.jordanrevata.tecscrum.models.ResponseMessage;
 import com.jordanrevata.tecscrum.repositories.UserRepository;
 import com.jordanrevata.tecscrum.services.ApiService;
 import com.jordanrevata.tecscrum.services.ApiServiceGenerator;
+
+import org.w3c.dom.Text;
 
 import java.util.Collections;
 import java.util.List;
@@ -40,6 +43,7 @@ public class ForumFragment extends Fragment {
     Integer idsprint;
     Button button_sendcomment;
     EditText editText_comment;
+    TextView textview_verify_list_forum;
 
     public ForumFragment() {
 
@@ -54,11 +58,14 @@ public class ForumFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_forum, container, false);
 
+        textview_verify_list_forum = view.findViewById(R.id.textview_verify_list_forum);
         editText_comment = view.findViewById(R.id.editText_comment);
         button_sendcomment = view.findViewById(R.id.button_sendcomment);
         recyclerview_comments = view.findViewById(R.id.recyclerview_comments);
         recyclerview_comments.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerview_comments.setAdapter(new ForumAdapter(this));
+
+        textview_verify_list_forum.setVisibility(View.INVISIBLE);
 
         button_sendcomment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,7 +119,9 @@ public class ForumFragment extends Fragment {
                         forumAdapter.notifyDataSetChanged();
 
 
-
+                        if(comments.isEmpty()){
+                            textview_verify_list_forum.setVisibility(View.VISIBLE);
+                        }
 
                         Log.d(TAG, comments.toString());
 

@@ -3,10 +3,13 @@ package com.jordanrevata.tecscrum.activities;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -17,8 +20,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,9 +38,12 @@ import com.firebase.jobdispatcher.RetryStrategy;
 import com.firebase.jobdispatcher.Trigger;
 import com.jordanrevata.tecscrum.R;
 import com.jordanrevata.tecscrum.adapters.ProjectAdapter;
+import com.jordanrevata.tecscrum.dialogs.ChangePasswordDialog;
 import com.jordanrevata.tecscrum.fragments.SprintListFragment;
+import com.jordanrevata.tecscrum.models.ChangePassword;
 import com.jordanrevata.tecscrum.models.Daily;
 import com.jordanrevata.tecscrum.models.Project;
+import com.jordanrevata.tecscrum.models.ResponseMessage;
 import com.jordanrevata.tecscrum.models.User;
 import com.jordanrevata.tecscrum.repositories.ProjectRepository;
 import com.jordanrevata.tecscrum.repositories.SavedRepository;
@@ -66,6 +75,17 @@ public class MainActivity extends AppCompatActivity {
     TextView emailText;
     TextView fullnameText;
     CircleImageView photoImage;
+    ChangePasswordDialog dialogChangePassword;
+
+    //Alert
+    private EditText editText_old_password;
+    private EditText editText_new_password;
+    private EditText editText_confirm_password;
+    private Button button_changePassword;
+    private Button button_cancel_changePassword;
+
+
+
 
     private FirebaseJobDispatcher dispatcher;
 
@@ -88,6 +108,13 @@ public class MainActivity extends AppCompatActivity {
         fullnameText.setText(user.getFullname());
         emailText.setText(user.getEmail());
 
+
+        if(SprintRepository.verifySprints()){
+            Function.updateSprints();
+            Log.d(TAG, "Sprints update from onStart");
+        }
+
+
     }
 
 
@@ -99,6 +126,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         projectList = new ArrayList<>();
+
+        if(SprintRepository.verifySprints()){
+            Function.updateSprints();
+            Log.d(TAG, "Sprints update from onStart");
+        }
 
         textview_verify_list_projects = findViewById(R.id.textview_verify_list_projects);
         textview_verify_list_projects.setVisibility(View.INVISIBLE);
@@ -165,12 +197,9 @@ public class MainActivity extends AppCompatActivity {
                             startActivity(intentProfile);
                             break;
 
-                        case R.id.nav_about:
+                        case R.id.nav_new_password:
 
-                            NotificationHelper notificationHelper = new NotificationHelper(getApplicationContext());
-
-                            notificationHelper.createNotification("Hola", "Como estás", new MoodTodayActivity(), 2);
-
+                            showAlertPassword();
 
                             break;
                         case R.id.nav_logout:
@@ -192,15 +221,118 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
             dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
 
             startJob();
 
 
 
+
         }
 
 
+    }
+
+    private void showAlertPassword(){
+        LayoutInflater layoutInflaterAndroid = LayoutInflater.from(MainActivity.this);
+        View mView = layoutInflaterAndroid.inflate(R.layout.dialog_change_password, null);
+        AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(MainActivity.this);
+        alertDialogBuilderUserInput.setView(mView);
+
+        final EditText editText_old_password = (EditText) mView.findViewById(R.id.editText_old_password);
+        final EditText editText_new_password = (EditText) mView.findViewById(R.id.editText_new_password);
+        final EditText editText_confirm_password = (EditText) mView.findViewById(R.id.editText_confirm_password);
+
+        alertDialogBuilderUserInput
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.confirm), null)
+                .setNegativeButton(getString(R.string.cancel),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialogBox, int id) {
+                                dialogBox.cancel();
+                            }
+                        });
+
+        final AlertDialog alertDialogAndroid = alertDialogBuilderUserInput.create();
+        alertDialogAndroid.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                Button b = alertDialogAndroid.getButton(AlertDialog.BUTTON_POSITIVE);
+                alertDialogAndroid.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorPrimary));
+                alertDialogAndroid.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+
+                alertDialogAndroid.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.colorPrimary));
+                alertDialogAndroid.getButton(AlertDialog.BUTTON_NEGATIVE).setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                b.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View view) {
+                        if(editText_old_password.getText().toString().equals("") || editText_new_password.getText().toString().equals("") || editText_confirm_password.getText().toString().equals("")){
+                            Toast.makeText(MainActivity.this, getString(R.string.required_form), Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        if(!editText_new_password.getText().toString().equals(editText_confirm_password.getText().toString())){
+                            Toast.makeText(MainActivity.this, getString(R.string.passwords_not_match), Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        ApiService apiService = ApiServiceGenerator.createService(ApiService.class);
+
+
+
+                        String newPassword = editText_new_password.getText().toString();
+                        String oldPassword = editText_old_password.getText().toString();
+
+                        Call<ResponseMessage> responseMessageCall = apiService.updatePassword(UserRepository.getUser().getIdusers(),oldPassword, newPassword);
+
+                        responseMessageCall.enqueue(new Callback<ResponseMessage>() {
+                            @Override
+                            public void onResponse(Call<ResponseMessage> call, Response<ResponseMessage> response) {
+
+                                try {
+
+                                    int statusCode = response.code();
+                                    Log.d(TAG, "HTTP status code: " + statusCode);
+
+                                    if(statusCode==400){
+                                        Toast.makeText(MainActivity.this, "Contraseña actual incorrecta", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+
+                                    if (response.isSuccessful()) {
+
+                                        Toast.makeText(MainActivity.this, "Contraseña actualizada", Toast.LENGTH_SHORT).show();
+                                        alertDialogAndroid.dismiss();
+
+                                    } else {
+                                        Log.e(TAG, "onError: " + response.errorBody().string());
+                                        throw new Exception("Error en el servicio");
+                                    }
+
+                                } catch (Throwable t) {
+                                    try {
+                                        Log.e(TAG, "onThrowable: " + t.toString(), t);
+                                        Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+                                    } catch (Throwable x) {
+                                    }
+                                }
+
+                            }
+
+                            @Override
+                            public void onFailure(Call<ResponseMessage> call, Throwable t) {
+
+                            }
+                        });
+
+
+                    }
+                });
+            }
+        });
+        alertDialogAndroid.show();
     }
 
     private void startJob(){

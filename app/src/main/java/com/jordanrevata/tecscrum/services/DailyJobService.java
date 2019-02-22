@@ -45,10 +45,7 @@ public class DailyJobService extends JobService {
 
             @Override
             protected void onPostExecute(String s) {
-                if(SprintRepository.verifySprints()){
-                    Function.updateSprints();
-                    Log.d(TAG, "Sprints update from initial service");
-                }
+
                 Calendar now = Calendar.getInstance();
                 if(now.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY && now.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
                     notificateGeneral();
